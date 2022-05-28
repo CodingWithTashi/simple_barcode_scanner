@@ -7,7 +7,7 @@ simple_barcode_scanner let you scan barcode and qr code.
 
 Web         |  Mobile
 :-------------------------:|:-------------------------:
-<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif" alt="drawing" width="550" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_mobile.gif" width="400" height="600" alt="drawing"/>
+<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif?raw=true" alt="drawing" width="550" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_mobile.gif?raw=true" width="400" height="600" alt="drawing"/>
 ## Features
 
 * Scan barcode in mobile devices using flutter_barcode_scanner
