@@ -1,39 +1,52 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# simple_barcode_scanner 
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+simple_barcode_scanner let you scan barcode and qr code.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Demo
+![Image](https://github.com/CodingWithTashi/simple_barcode_scanner/blob/master/example/demo/search.png?raw=true)
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+* Scan barcode in mobile devices using flutter_barcode_scanner
+* Scan barcode in web/window using html5-qrcode package
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+```dart
+simple_barcode_scanner: ^0.0.1
 
-## Usage
+```   
+Import the library:
+```dart
+import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+```
+## Usage   
 
 ```dart
-const like = 'sample';
-```
+** ElevatedButton(
+              onPressed: () async {
+                var res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SimpleBarcodeScannerPage(),
+                    ));
+                setState(() {
+                  if (res is String) {
+                    result = res;
+                  }
+                });
+              },
+              child: const Text('Open Scanner'),
+            ),**
+```   
+## Todo   
+* Flash and switch camera are only available in mobile devices
+* Enhancement
 
-## Additional information
+If you have any questions, feedback or ideas, feel free to [create an
+issue](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/new). If you enjoy this
+project, I'd appreciate your [🌟 on GitHub](https://github.com/CodingWithTashi/simple_barcode_scanner/).   
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+## You can also buy me a cup of coffee   
+<a href="https://www.buymeacoffee.com/codingwithtashi"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width=200px></a>
