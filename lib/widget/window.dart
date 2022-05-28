@@ -83,7 +83,6 @@ class WindowBarcodeScanner extends StatelessWidget {
   String getAssetFileUrl({required String asset}) {
     final assetsDirectory = p.join(p.dirname(Platform.resolvedExecutable),
         'data', 'flutter_assets', asset);
-    print(assetsDirectory);
     return Uri.file(assetsDirectory).toString();
   }
 
