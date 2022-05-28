@@ -2,7 +2,7 @@ name: simple_barcode_scanner
 description: Scanner plugin for Barcode/QR code. Scan using flutter_barcode_scanner for mobile device and html5-qrcode for web and windows
 version: 0.0.2
 homepage: https://github.com/CodingWithTashi/simple_barcode_scanner
-platform:
+platforms:
   android:
   ios:
   web:

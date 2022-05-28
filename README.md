@@ -14,7 +14,7 @@ Web         |  Mobile
 * Scan barcode in web/window using html5-qrcode package   
 
 ## Installation and configuration       
-* Mobile device uses flutter_barcode_scanner. refer [flutter_barcode_scanner](https://github.com/user/repo/blob/branch/other_file.md) for installation and setup
+* Mobile device uses flutter_barcode_scanner. refer [flutter_barcode_scanner](https://pub.dev/packages/flutter_barcode_scanner) for installation and setup
 * Web and window uses html5-qrcode. Setup is not required. For more you can read [html5-qrcode](https://github.com/mebjas/html5-qrcode)
 
 ## Getting started
