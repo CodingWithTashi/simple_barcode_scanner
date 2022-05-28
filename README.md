@@ -7,7 +7,7 @@ simple_barcode_scanner let you scan barcode and qr code.
 
 Web         |  Mobile
 :-------------------------:|:-------------------------:
-<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif" alt="drawing" width="500" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_mobile.gif" width="400" height="600" alt="drawing"/>
+<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif" alt="drawing" width="550" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_mobile.gif" width="400" height="600" alt="drawing"/>
 ## Features
 
 * Scan barcode in mobile devices using flutter_barcode_scanner
@@ -27,7 +27,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 ## Usage   
 
 ```dart
-** ElevatedButton(
+   ElevatedButton(
               onPressed: () async {
                 var res = await Navigator.push(
                     context,
@@ -41,7 +41,7 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
                 });
               },
               child: const Text('Open Scanner'),
-            ),**
+            )
 ```   
 ## Todo   
 * Flash and switch camera are only available in mobile devices
