@@ -39,19 +39,20 @@ class _HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-                onPressed: () async {
-                  var res = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SimpleBarcodeScannerPage(),
-                      ));
-                  setState(() {
-                    if (res is String) {
-                      result = res;
-                    }
-                  });
-                },
-                child: const Text('Open Scanner')),
+              onPressed: () async {
+                var res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SimpleBarcodeScannerPage(),
+                    ));
+                setState(() {
+                  if (res is String) {
+                    result = res;
+                  }
+                });
+              },
+              child: const Text('Open Scanner'),
+            ),
             Text('Barcode Result: $result'),
           ],
         ),
