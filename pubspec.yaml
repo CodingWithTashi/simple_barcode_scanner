@@ -10,6 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Flutter window webview
+  webview_windows: ^0.1.9
+  # Barcode scanner for android and ios
+  flutter_barcode_scanner: ^2.0.0
+  path: ^1.8.1
 
 dev_dependencies:
   flutter_test:
@@ -23,9 +28,9 @@ dev_dependencies:
 flutter:
 
   # To add assets to your package, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - packages/simple_barcode_scanner/assets/barcode.html
+    - packages/simple_barcode_scanner/assets/html5-qrcode.min.js
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
