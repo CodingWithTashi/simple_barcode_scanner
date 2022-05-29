@@ -11,3 +11,7 @@
 * update ReadMe.md
 * Fixed dart file convention for score 
 * static analysis issue fix 
+## 0.0.3
+* Window not scanning issue fixed
+* Update README.MD file
+* version update

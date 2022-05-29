@@ -24,17 +24,21 @@
          const html5QrCode = new Html5Qrcode("reader");
          console.log("Starting SCANNGING CODE");
          const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+             /* html5QrCode.stop(); */
              /* handle success for web */
              window.parent.postMessage(decodedText, "*");
 
              /* handle success for window */
+             if(window.chrome.webview!="undefined"){
              var param = {
-             "methodName":"submitCallback",
+             "methodName":"successCallback",
              "data":decodedText
              }
-             submitCallback(JSON.stringify(param));
+                window.chrome.webview.postMessage(param);
+             }
+
          };
-         const config = { fps: 10, qrbox:  { width: 280, height: 120 } };
+         const config = { fps: 10, qrbox:  { width: 280, height: 120, aspectRatio: 1.7777778 } };
 
          // If you want to prefer back camera
          html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);

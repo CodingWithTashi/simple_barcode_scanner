@@ -94,13 +94,15 @@ class WindowBarcodeScanner extends StatelessWidget {
       await controller.initialize();
       await controller
           .loadUrl(getAssetFileUrl(asset: PackageConstant.barcodeFilePath));
+
+      /// Listen to web to receive barcode
       controller.webMessage.listen((event) {
-        if (event['methodName'] == "submitCallback") {
-          if (event['data'] is String && event['data'].isNotEmpty) {
-            if (barcodeNumber == null) {
-              barcodeNumber = event['data'];
-              onScanned(barcodeNumber!);
-            }
+        if (event['methodName'] == "successCallback") {
+          if (event['data'] is String &&
+              event['data'].isNotEmpty &&
+              barcodeNumber == null) {
+            barcodeNumber = event['data'];
+            onScanned(barcodeNumber!);
           }
         }
       });
