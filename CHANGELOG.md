@@ -15,3 +15,8 @@
 * Window not scanning issue fixed
 * Update README.MD file
 * version update
+
+## 0.0.4
+* Added demo image for window
+* renamed file name and path
+* version update

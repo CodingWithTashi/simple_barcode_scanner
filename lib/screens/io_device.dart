@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:simple_barcode_scanner/enum.dart';
-import 'package:simple_barcode_scanner/widget/window.dart';
+import 'package:simple_barcode_scanner/screens/window.dart';
 
 /// Barcode scanner for mobile and desktop devices
 class BarcodeScanner extends StatelessWidget {
