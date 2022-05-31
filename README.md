@@ -5,12 +5,14 @@ simple_barcode_scanner that let you scan barcode and qr code in mobile,web and w
 ## Demo
 
 
-Web         |  Mobile
+Android         |  IOS
 :-------------------------:|:-------------------------:
-<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif?raw=true" alt="drawing" width="550" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_mobile.gif?raw=true" width="400" height="600" alt="drawing"/>
-Window         |  
+<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/scanner_android.gif?raw=true" alt="drawing" width="400" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_mobile.gif?raw=true" width="400" height="600" alt="drawing"/>
+      
+Window         |  Web
 :-------------------------:|:-------------------------:
-<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/window_scanner.gif?raw=true" alt="drawing" width="550" height="600"/>
+<img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/window_scanner.gif?raw=true" alt="drawing" width="550" height="600"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif?raw=true" width="550" height="600" alt="drawing"/>
+      
 
 ## Features
 
