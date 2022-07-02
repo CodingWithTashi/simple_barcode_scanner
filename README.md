@@ -57,7 +57,9 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 * Flash and switch camera are only available in mobile devices
 * Enhancement
 
-If you have any questions, feedback or ideas, feel free to [create an
+## Note
+Feel free to fork and send pull request.
+If you have any questions, feedback or ideas,You can [create an
 issue](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/new). If you enjoy this
 project, I'd appreciate your [🌟 on GitHub](https://github.com/CodingWithTashi/simple_barcode_scanner/).   
 
