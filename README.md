@@ -21,7 +21,8 @@ Window         |  Web
 
 ## Installation and configuration       
 * Mobile device uses flutter_barcode_scanner. refer [flutter_barcode_scanner](https://pub.dev/packages/flutter_barcode_scanner) for installation and setup
-* Web and window uses html5-qrcode. Setup is not required. For more you can read [html5-qrcode](https://github.com/mebjas/html5-qrcode)
+* Web uses html5-qrcode on [IFrameElement](https://api.flutter.dev/flutter/dart-html/IFrameElement-class.html). Setup is not required. For more you can read [html5-qrcode](https://github.com/mebjas/html5-qrcode)
+* Window uses html5-qrcode on [webview_windows](https://pub.dev/packages/webview_windows).
 
 ## Getting started
 
