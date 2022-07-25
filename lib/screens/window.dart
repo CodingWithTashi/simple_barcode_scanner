@@ -26,7 +26,9 @@ class WindowBarcodeScanner extends StatelessWidget {
     WebviewController controller = WebviewController();
     bool isPermissionGranted = false;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(kScanPageTitle),
+      ),
       body: FutureBuilder<bool>(
           future: initPlatformState(
             controller: controller,
