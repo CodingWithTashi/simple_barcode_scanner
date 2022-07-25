@@ -24,10 +24,15 @@ class WindowBarcodeScanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WebviewController controller = WebviewController();
-
+    bool isPermissionGranted = false;
     return Scaffold(
+      appBar: AppBar(
+        title: Text(kScanPageTitle),
+      ),
       body: FutureBuilder<bool>(
-          future: initPlatformState(controller: controller),
+          future: initPlatformState(
+            controller: controller,
+          ),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
               return Webview(
@@ -37,7 +42,8 @@ class WindowBarcodeScanner extends StatelessWidget {
                         url: url,
                         kind: permissionKind,
                         isUserInitiated: isUserInitiated,
-                        context: context),
+                        context: context,
+                        isPermissionGranted: isPermissionGranted),
               );
             } else if (snapshot.hasError) {
               return Center(
@@ -55,27 +61,37 @@ class WindowBarcodeScanner extends StatelessWidget {
       {required String url,
       required WebviewPermissionKind kind,
       required bool isUserInitiated,
-      required BuildContext context}) async {
-    final decision = await showDialog<WebviewPermissionDecision>(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-        title: const Text('Permission requested'),
-        content:
-            Text('\'${kind.name}\' permission is require to scan qr/barcode'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () =>
-                Navigator.pop(context, WebviewPermissionDecision.deny),
-            child: const Text('Deny'),
-          ),
-          TextButton(
-            onPressed: () =>
-                Navigator.pop(context, WebviewPermissionDecision.allow),
-            child: const Text('Allow'),
-          ),
-        ],
-      ),
-    );
+      required BuildContext context,
+      required bool isPermissionGranted}) async {
+    final WebviewPermissionDecision? decision;
+    if (!isPermissionGranted) {
+      decision = await showDialog<WebviewPermissionDecision>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Permission requested'),
+          content:
+              Text('\'${kind.name}\' permission is require to scan qr/barcode'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, WebviewPermissionDecision.deny);
+                isPermissionGranted = false;
+              },
+              child: const Text('Deny'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context, WebviewPermissionDecision.allow);
+                isPermissionGranted = true;
+              },
+              child: const Text('Allow'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      decision = WebviewPermissionDecision.allow;
+    }
 
     return decision ?? WebviewPermissionDecision.none;
   }
