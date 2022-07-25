@@ -9,8 +9,8 @@
 
 * Fix platform list issue not displaying in pub.dev
 * update ReadMe.md
-* Fixed dart file convention for score 
-* static analysis issue fix 
+* Fixed dart file convention for score
+* static analysis issue fix
 ## 0.0.3
 * Window not scanning issue fixed
 * Update README.MD file
@@ -20,3 +20,8 @@
 * Added demo image for window
 * renamed file name and path
 * version update
+
+## 0.0.5
+* added button for web and window
+* updated packages
+* permission refactored
