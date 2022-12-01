@@ -25,3 +25,7 @@
 * added button for web and window
 * updated packages
 * permission refactored
+
+## 0.0.6
+* Document update
+* warning update
