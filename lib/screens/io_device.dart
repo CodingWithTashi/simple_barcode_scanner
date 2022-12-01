@@ -47,14 +47,14 @@ class BarcodeScanner extends StatelessWidget {
     /// Scan barcode for mobile devices
     ScanMode scanMode;
     switch (scanType) {
-      case ScanType.BARCODE:
-        scanMode = ScanMode.barcode;
+      case ScanType.barcode:
+        scanMode = ScanMode.BARCODE;
         break;
-      case ScanType.QR:
-        scanMode = ScanMode.qr;
+      case ScanType.qr:
+        scanMode = ScanMode.QR;
         break;
       default:
-        scanMode = ScanMode.defaultMode;
+        scanMode = ScanMode.DEFAULT;
         break;
     }
     String barcode = await FlutterBarcodeScanner.scanBarcode(
