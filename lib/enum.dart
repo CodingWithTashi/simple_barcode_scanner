@@ -1,1 +1,1 @@
-enum ScanType { QR, BARCODE, DEFAULT }
+enum ScanType { qr, barcode, defaultMode }

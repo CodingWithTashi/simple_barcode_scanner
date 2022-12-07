@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   runApp(const MyApp());

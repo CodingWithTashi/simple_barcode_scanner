@@ -47,10 +47,10 @@ class BarcodeScanner extends StatelessWidget {
     /// Scan barcode for mobile devices
     ScanMode scanMode;
     switch (scanType) {
-      case ScanType.BARCODE:
+      case ScanType.barcode:
         scanMode = ScanMode.BARCODE;
         break;
-      case ScanType.QR:
+      case ScanType.qr:
         scanMode = ScanMode.QR;
         break;
       default:

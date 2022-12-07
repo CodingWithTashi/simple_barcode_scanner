@@ -25,7 +25,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
     this.lineColor = "#ff6666",
     this.cancelButtonText = "Cancel",
     this.isShowFlashIcon = false,
-    this.scanType = ScanType.BARCODE,
+    this.scanType = ScanType.barcode,
   }) : super(key: key);
 
   @override
