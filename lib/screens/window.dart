@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as p;
 import 'package:simple_barcode_scanner/constant.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:webview_windows/webview_windows.dart';
-import 'package:path/path.dart' as p;
 
 class WindowBarcodeScanner extends StatelessWidget {
   final String lineColor;
@@ -28,6 +30,14 @@ class WindowBarcodeScanner extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(kScanPageTitle),
+        leading: IconButton(
+          onPressed: () {
+            /// send close event to web-view
+            controller.postWebMessage(json.encode({"event": "close"}));
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
       ),
       body: FutureBuilder<bool>(
           future: initPlatformState(
@@ -39,11 +49,12 @@ class WindowBarcodeScanner extends StatelessWidget {
                 controller,
                 permissionRequested: (url, permissionKind, isUserInitiated) =>
                     _onPermissionRequested(
-                        url: url,
-                        kind: permissionKind,
-                        isUserInitiated: isUserInitiated,
-                        context: context,
-                        isPermissionGranted: isPermissionGranted),
+                  url: url,
+                  kind: permissionKind,
+                  isUserInitiated: isUserInitiated,
+                  context: context,
+                  isPermissionGranted: isPermissionGranted,
+                ),
               );
             } else if (snapshot.hasError) {
               return Center(
