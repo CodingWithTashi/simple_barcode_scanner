@@ -13,6 +13,8 @@ class WindowBarcodeScanner extends StatelessWidget {
   final bool isShowFlashIcon;
   final ScanType scanType;
   final Function(String) onScanned;
+  final String? appBarTitle;
+  final bool? centerTitle;
 
   const WindowBarcodeScanner({
     Key? key,
@@ -21,6 +23,8 @@ class WindowBarcodeScanner extends StatelessWidget {
     required this.isShowFlashIcon,
     required this.scanType,
     required this.onScanned,
+    this.appBarTitle,
+    this.centerTitle,
   }) : super(key: key);
 
   @override
@@ -29,7 +33,8 @@ class WindowBarcodeScanner extends StatelessWidget {
     bool isPermissionGranted = false;
     return Scaffold(
       appBar: AppBar(
-        title: Text(kScanPageTitle),
+        title: Text(appBarTitle ?? kScanPageTitle),
+        centerTitle: centerTitle,
         leading: IconButton(
           onPressed: () {
             /// send close event to web-view

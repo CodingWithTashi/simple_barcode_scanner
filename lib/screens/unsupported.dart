@@ -7,13 +7,17 @@ class BarcodeScanner extends StatelessWidget {
   final bool isShowFlashIcon;
   final ScanType scanType;
   final Function(String) onScanned;
+  final String? appBarTitle;
+  final bool? centerTitle;
   const BarcodeScanner(
       {Key? key,
       this.lineColor = "#ff6666",
       this.cancelButtonText = "Cancel",
       this.isShowFlashIcon = false,
       this.scanType = ScanType.barcode,
-      required this.onScanned})
+      required this.onScanned,
+      this.appBarTitle,
+      this.centerTitle})
       : super(key: key);
 
   @override

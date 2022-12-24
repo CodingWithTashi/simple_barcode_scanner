@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:simple_barcode_scanner/enum.dart';
@@ -11,7 +12,8 @@ class BarcodeScanner extends StatelessWidget {
   final bool isShowFlashIcon;
   final ScanType scanType;
   final Function(String) onScanned;
-
+  final String? appBarTitle;
+  final bool? centerTitle;
   const BarcodeScanner({
     Key? key,
     required this.lineColor,
@@ -19,6 +21,8 @@ class BarcodeScanner extends StatelessWidget {
     required this.isShowFlashIcon,
     required this.scanType,
     required this.onScanned,
+    this.appBarTitle,
+    this.centerTitle,
   }) : super(key: key);
 
   @override
@@ -31,6 +35,8 @@ class BarcodeScanner extends StatelessWidget {
         isShowFlashIcon: isShowFlashIcon,
         scanType: scanType,
         onScanned: onScanned,
+        appBarTitle: appBarTitle,
+        centerTitle: centerTitle,
       );
     } else {
       /// Scan Android and ios barcode scanner with flutter_barcode_scanner

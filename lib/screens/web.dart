@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:simple_barcode_scanner/constant.dart';
-import 'package:simple_barcode_scanner/enum.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
+import 'package:simple_barcode_scanner/constant.dart';
+import 'package:simple_barcode_scanner/enum.dart';
 
 /// Barcode scanner for web using iframe
 class BarcodeScanner extends StatelessWidget {
@@ -12,6 +13,8 @@ class BarcodeScanner extends StatelessWidget {
   final bool isShowFlashIcon;
   final ScanType scanType;
   final Function(String) onScanned;
+  final String? appBarTitle;
+  final bool? centerTitle;
 
   const BarcodeScanner({
     Key? key,
@@ -20,6 +23,8 @@ class BarcodeScanner extends StatelessWidget {
     required this.isShowFlashIcon,
     required this.scanType,
     required this.onScanned,
+    this.appBarTitle,
+    this.centerTitle,
   }) : super(key: key);
 
   @override
@@ -47,7 +52,8 @@ class BarcodeScanner extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(kScanPageTitle),
+        title: Text(appBarTitle ?? kScanPageTitle),
+        centerTitle: centerTitle,
       ),
       body: HtmlElementView(
         viewType: createdViewId,
