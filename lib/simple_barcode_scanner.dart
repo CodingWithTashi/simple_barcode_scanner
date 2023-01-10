@@ -25,6 +25,10 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
   ///center Title
   final bool? centerTitle;
 
+  /// Only for web app, set qrBox width and height
+  final int scanWidth;
+  final int scanHeight;
+
   /// appBatTitle and centerTitle support in web and window only
   /// Remaining field support in only mobile devices
   const SimpleBarcodeScannerPage({
@@ -35,6 +39,8 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
     this.scanType = ScanType.barcode,
     this.appBarTitle,
     this.centerTitle,
+    this.scanWidth = 280,
+    this.scanHeight = 120    
   }) : super(key: key);
 
   @override
