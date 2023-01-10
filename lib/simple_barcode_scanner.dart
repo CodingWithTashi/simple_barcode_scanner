@@ -25,7 +25,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
   ///center Title
   final bool? centerTitle;
 
-  /// Only for web app, set qrBox width and height
+  /// Only for web apps, set qrBox width and height
   final int scanWidth;
   final int scanHeight;
 
