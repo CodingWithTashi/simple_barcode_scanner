@@ -39,6 +39,7 @@ flutter:
   assets:
     - packages/simple_barcode_scanner/assets/barcode.html
     - packages/simple_barcode_scanner/assets/html5-qrcode.min.js
+    - packages/simple_barcode_scanner/assets/reader.js
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

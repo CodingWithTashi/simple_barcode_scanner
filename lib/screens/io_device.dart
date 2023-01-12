@@ -14,6 +14,10 @@ class BarcodeScanner extends StatelessWidget {
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
+  /// Properties only added to standardize the implementation of the BarcodeScanner class
+  final int scanWidth;
+  final int scanHeight;
+
   const BarcodeScanner({
     Key? key,
     required this.lineColor,
@@ -23,6 +27,8 @@ class BarcodeScanner extends StatelessWidget {
     required this.onScanned,
     this.appBarTitle,
     this.centerTitle,
+    this.scanWidth = 0,
+    this.scanHeight = 0
   }) : super(key: key);
 
   @override
