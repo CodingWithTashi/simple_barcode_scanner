@@ -1,7 +1,6 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 import 'dart:ui' as ui;
-import 'dart:js' as js;
 
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/constant.dart';
@@ -16,8 +15,6 @@ class BarcodeScanner extends StatelessWidget {
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
-  final int scanWidth;
-  final int scanHeight;
 
   const BarcodeScanner({
     Key? key,
@@ -28,8 +25,6 @@ class BarcodeScanner extends StatelessWidget {
     required this.onScanned,
     this.appBarTitle,
     this.centerTitle,
-    this.scanWidth = 288,
-    this.scanHeight = 120    
   }) : super(key: key);
 
   @override
@@ -41,15 +36,8 @@ class BarcodeScanner extends StatelessWidget {
       ..src = PackageConstant.barcodeFileWebPath
       ..style.border = 'none'
       ..onLoad.listen((event) async {
-        html.window.onMessage.listen((event) {
-        /// Create reader setting qrBox width and height
-        html.CustomEvent event = new html.CustomEvent("reader", detail : {
-          "qrBoxWidth": scanWidth,
-          "qrBoxHeight": scanHeight
-        });
-        html.window.document.dispatchEvent(event);
-
         /// Barcode listener on success barcode scanned
+        html.window.onMessage.listen((event) {
           /// If barcode is null then assign scanned barcode
           /// and close the screen otherwise keep scanning
           if (barcodeNumber == null) {
