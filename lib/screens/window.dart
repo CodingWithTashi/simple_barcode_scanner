@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:simple_barcode_scanner/constant.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:webview_windows/webview_windows.dart';
@@ -31,6 +32,12 @@ class WindowBarcodeScanner extends StatelessWidget {
   Widget build(BuildContext context) {
     WebviewController controller = WebviewController();
     bool isPermissionGranted = false;
+
+    _checkCameraPermission().then((granted) {
+      debugPrint("Permission is $granted");
+      isPermissionGranted = granted;
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle ?? kScanPageTitle),
@@ -71,6 +78,11 @@ class WindowBarcodeScanner extends StatelessWidget {
             );
           }),
     );
+  }
+
+  /// Checks if camera permission has already been granted
+  Future<bool> _checkCameraPermission() async {
+    return await Permission.camera.status.isGranted;
   }
 
   Future<WebviewPermissionDecision> _onPermissionRequested(
