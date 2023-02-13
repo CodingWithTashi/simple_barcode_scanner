@@ -34,3 +34,7 @@
 ## 0.0.7
 * Fixed performance issue with window [5](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/5)
 * Added appBar title and centerTitle param [11](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/11)
+
+## 0.0.8
+* Fixed window permission issue
+* refactored code
