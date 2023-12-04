@@ -18,17 +18,17 @@ dependencies:
   flutter:
     sdk: flutter
   # Flutter window webview
-  webview_windows: ^0.2.2
+  webview_windows: ^0.3.0
   # Barcode scanner for android and ios
   flutter_barcode_scanner: ^2.0.0
   #Get assets path for window platform
   path: ^1.8.2
   #checking permissions
-  permission_handler: ^10.2.0
+  permission_handler: ^11.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
