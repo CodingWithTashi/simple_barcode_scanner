@@ -9,6 +9,7 @@ class BarcodeScanner extends StatelessWidget {
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
+  final int? delayInMilliSec;
   const BarcodeScanner(
       {Key? key,
       this.lineColor = "#ff6666",
@@ -17,7 +18,8 @@ class BarcodeScanner extends StatelessWidget {
       this.scanType = ScanType.barcode,
       required this.onScanned,
       this.appBarTitle,
-      this.centerTitle})
+      this.centerTitle,
+      this.delayInMilliSec})
       : super(key: key);
 
   @override

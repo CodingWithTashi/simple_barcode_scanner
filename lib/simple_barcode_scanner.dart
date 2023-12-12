@@ -25,6 +25,9 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
   ///center Title
   final bool? centerTitle;
 
+  ///Add delay in millisecond for scan to accurately focus on the bar/qr code
+  final int? delayInMilliSec;
+
   /// appBatTitle and centerTitle support in web and window only
   /// Remaining field support in only mobile devices
   const SimpleBarcodeScannerPage({
@@ -35,6 +38,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
     this.scanType = ScanType.barcode,
     this.appBarTitle,
     this.centerTitle,
+    this.delayInMilliSec,
   }) : super(key: key);
 
   @override
@@ -46,6 +50,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       scanType: scanType,
       appBarTitle: appBarTitle,
       centerTitle: centerTitle,
+      delayInMilliSec: delayInMilliSec,
       onScanned: (res) {
         Navigator.pop(context, res);
       },

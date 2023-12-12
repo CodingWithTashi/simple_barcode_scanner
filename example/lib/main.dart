@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 void main() {
@@ -42,7 +43,8 @@ class _HomePageState extends State<HomePage> {
                 var res = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SimpleBarcodeScannerPage(),
+                      builder: (context) =>
+                          const SimpleBarcodeScannerPage(delayInMilliSec: 3000),
                     ));
                 setState(() {
                   if (res is String) {
@@ -50,7 +52,24 @@ class _HomePageState extends State<HomePage> {
                   }
                 });
               },
-              child: const Text('Open Scanner'),
+              child: const Text('Open barcode scanner'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var res = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SimpleBarcodeScannerPage(
+                        scanType: ScanType.qr,
+                      ),
+                    ));
+                setState(() {
+                  if (res is String) {
+                    result = res;
+                  }
+                });
+              },
+              child: const Text('Open qr scanner'),
             ),
             Text('Barcode Result: $result'),
           ],

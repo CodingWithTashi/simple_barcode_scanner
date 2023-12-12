@@ -14,30 +14,32 @@ class BarcodeScanner extends StatelessWidget {
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
-  const BarcodeScanner({
-    Key? key,
-    required this.lineColor,
-    required this.cancelButtonText,
-    required this.isShowFlashIcon,
-    required this.scanType,
-    required this.onScanned,
-    this.appBarTitle,
-    this.centerTitle,
-  }) : super(key: key);
+  final int? delayInMilliSec;
+  const BarcodeScanner(
+      {Key? key,
+      required this.lineColor,
+      required this.cancelButtonText,
+      required this.isShowFlashIcon,
+      required this.scanType,
+      required this.onScanned,
+      this.appBarTitle,
+      this.centerTitle,
+      this.delayInMilliSec})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (Platform.isWindows) {
       ///Get Window barcode Scanner UI
       return WindowBarcodeScanner(
-        lineColor: lineColor,
-        cancelButtonText: cancelButtonText,
-        isShowFlashIcon: isShowFlashIcon,
-        scanType: scanType,
-        onScanned: onScanned,
-        appBarTitle: appBarTitle,
-        centerTitle: centerTitle,
-      );
+          lineColor: lineColor,
+          cancelButtonText: cancelButtonText,
+          isShowFlashIcon: isShowFlashIcon,
+          scanType: scanType,
+          onScanned: onScanned,
+          appBarTitle: appBarTitle,
+          centerTitle: centerTitle,
+          delayInMilliSec: delayInMilliSec);
     } else {
       /// Scan Android and ios barcode scanner with flutter_barcode_scanner
       _scanBarcodeForMobileAndTabDevices();
