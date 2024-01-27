@@ -38,3 +38,6 @@
 ## 0.0.8
 * Fixed window permission issue
 * refactored code
+
+## 0.0.9
+* Thanks to [treyhendon](https://github.com/treyhendon/simple_barcode_scanner/commits?author=treyhendon).Added UPC Barcode support [41](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/41)
