@@ -41,3 +41,9 @@
 
 ## 0.0.9
 * Thanks to [treyhendon](https://github.com/treyhendon). Added UPC Barcode support [41](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/41)
+
+## 0.0.10
+* Downgraded sdk from to 4 to 3 to support older flutter project
+
+## 0.1.0
+* Upgraded flutter sdk
