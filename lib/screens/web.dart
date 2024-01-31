@@ -1,6 +1,6 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
-import 'dart:ui' as ui;
+import 'dart:ui_web' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/constant.dart';
@@ -15,9 +15,9 @@ class BarcodeScanner extends StatelessWidget {
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
-
+  final Widget? child;
   const BarcodeScanner({
-    Key? key,
+    super.key,
     required this.lineColor,
     required this.cancelButtonText,
     required this.isShowFlashIcon,
@@ -25,7 +25,8 @@ class BarcodeScanner extends StatelessWidget {
     required this.onScanned,
     this.appBarTitle,
     this.centerTitle,
-  }) : super(key: key);
+    this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,8 @@ class BarcodeScanner extends StatelessWidget {
     final html.IFrameElement iframe = html.IFrameElement()
       ..src = PackageConstant.barcodeFileWebPath
       ..style.border = 'none'
+      ..style.width = '100%'
+      ..style.height = '100%'
       ..onLoad.listen((event) async {
         /// Barcode listener on success barcode scanned
         html.window.onMessage.listen((event) {
@@ -49,14 +52,26 @@ class BarcodeScanner extends StatelessWidget {
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry
         .registerViewFactory(createdViewId, (int viewId) => iframe);
-
+    final width = MediaQuery.of(context).size.width;
+    final height = width / (16 / 9);
     return Scaffold(
       appBar: AppBar(
         title: Text(appBarTitle ?? kScanPageTitle),
         centerTitle: centerTitle,
       ),
-      body: HtmlElementView(
-        viewType: createdViewId,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: height,
+              width: width,
+              child: HtmlElementView(
+                viewType: createdViewId,
+              ),
+            ),
+            if (child != null) child!,
+          ],
+        ),
       ),
     );
   }

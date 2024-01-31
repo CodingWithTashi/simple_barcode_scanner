@@ -18,7 +18,7 @@ class WindowBarcodeScanner extends StatelessWidget {
   final bool? centerTitle;
 
   const WindowBarcodeScanner({
-    Key? key,
+    super.key,
     required this.lineColor,
     required this.cancelButtonText,
     required this.isShowFlashIcon,
@@ -26,7 +26,7 @@ class WindowBarcodeScanner extends StatelessWidget {
     required this.onScanned,
     this.appBarTitle,
     this.centerTitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

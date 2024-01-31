@@ -14,16 +14,18 @@ class BarcodeScanner extends StatelessWidget {
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
+  final Widget? child;
   const BarcodeScanner({
-    Key? key,
+    super.key,
     required this.lineColor,
     required this.cancelButtonText,
     required this.isShowFlashIcon,
     required this.scanType,
     required this.onScanned,
+    this.child,
     this.appBarTitle,
     this.centerTitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
