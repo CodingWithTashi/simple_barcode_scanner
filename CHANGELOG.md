@@ -47,3 +47,6 @@
 
 ## 0.1.0
 * Upgraded flutter sdk
+
+## 0.1.1
+* Fixed [46](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/46)
