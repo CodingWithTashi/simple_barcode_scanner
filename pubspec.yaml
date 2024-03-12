@@ -22,9 +22,9 @@ dependencies:
   # Barcode scanner for android and ios
   flutter_barcode_scanner: ^2.0.0
   #Get assets path for window platform
-  path: ^1.8.2
+  path: ^1.8.3
   #checking permissions
-  permission_handler: ^11.2.0
+  permission_handler: ^11.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
