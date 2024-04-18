@@ -1,5 +1,5 @@
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import 'package:web/web.dart' as html;
 import 'dart:ui_web' as ui;
 
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class BarcodeScanner extends StatelessWidget {
     String createdViewId = DateTime.now().microsecondsSinceEpoch.toString();
     String? barcodeNumber;
 
-    final html.IFrameElement iframe = html.IFrameElement()
+    final iframe = html.HTMLIFrameElement()
       ..src = PackageConstant.barcodeFileWebPath
       ..style.border = 'none'
       ..style.width = '100%'
@@ -44,7 +44,7 @@ class BarcodeScanner extends StatelessWidget {
           /// If barcode is null then assign scanned barcode
           /// and close the screen otherwise keep scanning
           if (barcodeNumber == null) {
-            barcodeNumber = event.data;
+            barcodeNumber = event.data.toString();
             onScanned(barcodeNumber!);
           }
         });

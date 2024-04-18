@@ -25,6 +25,8 @@ dependencies:
   path: ^1.8.3
   #checking permissions
   permission_handler: ^11.3.0
+  #Add new web package
+  web: ^0.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
