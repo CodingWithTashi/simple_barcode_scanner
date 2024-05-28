@@ -50,3 +50,4 @@
 
 ## 0.1.1
 * Fixed [46](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/46)
+* Other bug fixes
