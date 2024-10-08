@@ -57,3 +57,9 @@
 * Package updated
 * Example project updated
 * Minor code refactor
+
+## 0.1.3
+* Package updated
+* Example project updated
+* flutter barcode scanner package code is now added as part of simple barcode scanner since package is no longer actively maintained.
+* fixed [66](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/66)
