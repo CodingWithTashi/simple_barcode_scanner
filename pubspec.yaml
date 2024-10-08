@@ -20,13 +20,14 @@ dependencies:
   # Flutter window webview
   webview_windows: ^0.4.0
   # Barcode scanner for android and ios
-  flutter_barcode_scanner: ^2.0.0
+  #flutter_barcode_scanner: ^2.0.0
   #Get assets path for window platform
   path: ^1.9.0
   #checking permissions
   permission_handler: ^11.3.1
   #Add new web package
   web: ^1.1.0
+  flutter_plugin_android_lifecycle: ^2.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -42,6 +43,14 @@ flutter:
   assets:
     - packages/simple_barcode_scanner/assets/barcode.html
     - packages/simple_barcode_scanner/assets/html5-qrcode.min.js
+  plugin:
+    platforms:
+      android:
+        package: com.amolg.flutterbarcodescanner
+        pluginClass: FlutterBarcodeScannerPlugin
+      ios:
+        pluginClass: SwiftFlutterBarcodeScannerPlugin
+
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
