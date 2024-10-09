@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/screens/window.dart';
 
+import '../barcode_appbar.dart';
 import '../flutter_barcode_scanner.dart';
 
 /// Barcode scanner for mobile and desktop devices
@@ -16,6 +17,8 @@ class BarcodeScanner extends StatelessWidget {
   final String? appBarTitle;
   final bool? centerTitle;
   final Widget? child;
+  final BarcodeAppBar? barcodeAppBar;
+
   const BarcodeScanner({
     super.key,
     required this.lineColor,
@@ -26,6 +29,7 @@ class BarcodeScanner extends StatelessWidget {
     this.child,
     this.appBarTitle,
     this.centerTitle,
+    this.barcodeAppBar,
   });
 
   @override

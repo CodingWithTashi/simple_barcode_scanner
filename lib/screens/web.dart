@@ -1,10 +1,12 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'package:web/web.dart' as html;
 import 'dart:ui_web' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/constant.dart';
 import 'package:simple_barcode_scanner/enum.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'package:web/web.dart' as html;
+
+import '../barcode_appbar.dart';
 
 /// Barcode scanner for web using iframe
 class BarcodeScanner extends StatelessWidget {
@@ -16,6 +18,8 @@ class BarcodeScanner extends StatelessWidget {
   final String? appBarTitle;
   final bool? centerTitle;
   final Widget? child;
+  final BarcodeAppBar? barcodeAppBar;
+
   const BarcodeScanner({
     super.key,
     required this.lineColor,
@@ -26,6 +30,7 @@ class BarcodeScanner extends StatelessWidget {
     this.appBarTitle,
     this.centerTitle,
     this.child,
+    this.barcodeAppBar,
   });
 
   @override
@@ -55,10 +60,7 @@ class BarcodeScanner extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = width / (16 / 9);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(appBarTitle ?? kScanPageTitle),
-        centerTitle: centerTitle,
-      ),
+      appBar: _buildAppBar(context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -72,6 +74,36 @@ class BarcodeScanner extends StatelessWidget {
             if (child != null) child!,
           ],
         ),
+      ),
+    );
+  }
+
+  _buildAppBar(BuildContext context) {
+    if (appBarTitle == null && barcodeAppBar == null) {
+      return null;
+    }
+    if (barcodeAppBar != null) {
+      return AppBar(
+        title: barcodeAppBar?.appBarTitle != null
+            ? Text(barcodeAppBar!.appBarTitle!)
+            : null,
+        centerTitle: barcodeAppBar?.centerTitle ?? false,
+        leading: barcodeAppBar?.enableBackButton == true
+            ? IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: barcodeAppBar?.backButtonIcon ??
+                    const Icon(Icons.arrow_back_ios))
+            : null,
+        automaticallyImplyLeading: false,
+      );
+    }
+    return AppBar(
+      title: Text(appBarTitle ?? kScanPageTitle),
+      centerTitle: centerTitle,
+      automaticallyImplyLeading: true,
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back_ios),
+        onPressed: () => Navigator.pop(context),
       ),
     );
   }

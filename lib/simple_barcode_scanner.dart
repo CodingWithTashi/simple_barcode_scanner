@@ -1,6 +1,7 @@
 library simple_barcode_scanner;
 
 import 'package:flutter/material.dart';
+import 'package:simple_barcode_scanner/barcode_appbar.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/screens/shared.dart';
 
@@ -20,10 +21,17 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
   final ScanType scanType;
 
   ///AppBar Title
+  @Deprecated(
+      'Use BarcodeAppBar instead. This field will be removed in future versions.')
   final String? appBarTitle;
+
+  @Deprecated(
+      'Use BarcodeAppBar instead. This field will be removed in future versions.')
 
   ///center Title
   final bool? centerTitle;
+
+  final BarcodeAppBar? barcodeAppBar;
 
   /// Specify a child widget to be positioned beneath the scanner.
   /// This is beneficial when you need to include a customized text field
@@ -48,19 +56,26 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
 
   /// appBatTitle and centerTitle support in web and window only
   /// Remaining field support in only mobile devices
-  const SimpleBarcodeScannerPage({
-    super.key,
-    this.lineColor = "#ff6666",
-    this.cancelButtonText = "Cancel",
-    this.isShowFlashIcon = false,
-    this.scanType = ScanType.barcode,
-    this.appBarTitle,
-    this.centerTitle,
-    this.child,
-  });
+  const SimpleBarcodeScannerPage(
+      {super.key,
+      this.lineColor = "#ff6666",
+      this.cancelButtonText = "Cancel",
+      this.isShowFlashIcon = false,
+      this.scanType = ScanType.barcode,
+      this.appBarTitle,
+      this.centerTitle,
+      this.child,
+      this.barcodeAppBar});
 
   @override
   Widget build(BuildContext context) {
+    assert(
+        (appBarTitle == null && centerTitle == null) ||
+            barcodeAppBar == null ||
+            (appBarTitle != null &&
+                centerTitle != null &&
+                barcodeAppBar == null),
+        'Either provide both appBarTitle and centerTitle together, or provide barcodeAppBar, but not both.');
     return BarcodeScanner(
       lineColor: lineColor,
       cancelButtonText: cancelButtonText,
@@ -68,6 +83,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       scanType: scanType,
       appBarTitle: appBarTitle,
       centerTitle: centerTitle,
+      barcodeAppBar: barcodeAppBar,
       child: child,
       onScanned: (res) {
         Navigator.pop(context, res);
