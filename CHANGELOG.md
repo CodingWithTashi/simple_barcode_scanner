@@ -65,7 +65,7 @@
 * fixed [66](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/66)
 
 
-## 0.1.3
+## 0.1.4
 * Added BarcodeAppBar class
 * Depreciated centerTitle and appBarTitle, use [BarcodeAppBar] instead
 * Fixed [68](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/68)
