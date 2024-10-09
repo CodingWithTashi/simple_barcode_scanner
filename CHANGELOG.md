@@ -69,3 +69,9 @@
 * Added BarcodeAppBar class
 * Depreciated centerTitle and appBarTitle, use [BarcodeAppBar] instead
 * Fixed [68](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/68)
+
+## 0.1.5
+* Fixed depreciated issue
+* Added BarcodeAppBar class
+* Depreciated centerTitle and appBarTitle, use [BarcodeAppBar] instead
+* Fixed [68](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/68)

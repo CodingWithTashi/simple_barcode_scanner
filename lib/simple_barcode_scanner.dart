@@ -22,12 +22,8 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
   final ScanType scanType;
 
   ///AppBar Title
-  @Deprecated(
-      'Use BarcodeAppBar instead. This field will be removed in future versions.')
-  final String? appBarTitle;
 
-  @Deprecated(
-      'Use BarcodeAppBar instead. This field will be removed in future versions.')
+  final String? appBarTitle;
 
   ///center Title
   final bool? centerTitle;
@@ -63,7 +59,11 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       this.cancelButtonText = "Cancel",
       this.isShowFlashIcon = false,
       this.scanType = ScanType.barcode,
+      @Deprecated(
+          'Use BarcodeAppBar instead. This field will be removed in future versions.')
       this.appBarTitle,
+      @Deprecated(
+          'Use BarcodeAppBar instead. This field will be removed in future versions.')
       this.centerTitle,
       this.child,
       this.barcodeAppBar});
