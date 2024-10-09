@@ -5,6 +5,7 @@ import 'package:simple_barcode_scanner/barcode_appbar.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/screens/shared.dart';
 
+export 'package:simple_barcode_scanner/barcode_appbar.dart';
 export 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class SimpleBarcodeScannerPage extends StatelessWidget {

@@ -63,3 +63,9 @@
 * Example project updated
 * flutter barcode scanner package code is now added as part of simple barcode scanner since package is no longer actively maintained.
 * fixed [66](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/66)
+
+
+## 0.1.3
+* Added BarcodeAppBar class
+* Depreciated centerTitle and appBarTitle, use [BarcodeAppBar] instead
+* Fixed [68](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/68)
