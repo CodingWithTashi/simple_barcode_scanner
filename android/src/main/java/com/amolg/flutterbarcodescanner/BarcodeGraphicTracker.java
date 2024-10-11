@@ -16,6 +16,10 @@
 package com.amolg.flutterbarcodescanner;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+
 import androidx.annotation.UiThread;
 
 import com.amolg.flutterbarcodescanner.camera.GraphicOverlay;
@@ -32,8 +36,10 @@ import com.google.android.gms.vision.barcode.Barcode;
 public class BarcodeGraphicTracker extends Tracker<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mOverlay;
     private BarcodeGraphic mGraphic;
-
+    private int delayMillis;
     private BarcodeUpdateListener mBarcodeUpdateListener;
+    private Handler handler;
+    private boolean isWaiting = false;
 
     /**
      * Consume the item instance detected from an Activity or Fragment level by implementing the
@@ -44,9 +50,11 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
         void onBarcodeDetected(Barcode barcode);
     }
 
-    BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> mOverlay, BarcodeGraphic mGraphic, Context context) {
+    BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> mOverlay, BarcodeGraphic mGraphic, Context context, int delayMillis) {
         this.mOverlay = mOverlay;
         this.mGraphic = mGraphic;
+        this.delayMillis = delayMillis;
+        this.handler = new Handler(Looper.getMainLooper());
         if (context instanceof BarcodeUpdateListener) {
             this.mBarcodeUpdateListener = (BarcodeUpdateListener) context;
         } else {
@@ -60,7 +68,7 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     @Override
     public void onNewItem(int id, Barcode item) {
         mGraphic.setId(id);
-        mBarcodeUpdateListener.onBarcodeDetected(item);
+        processDetection(item);
     }
 
     /**
@@ -70,6 +78,24 @@ public class BarcodeGraphicTracker extends Tracker<Barcode> {
     public void onUpdate(Detector.Detections<Barcode> detectionResults, Barcode item) {
         mOverlay.add(mGraphic);
         mGraphic.updateItem(item);
+        processDetection(item);
+    }
+
+    private void processDetection(final Barcode item) {
+        if (!isWaiting) {
+            isWaiting = true;
+            Log.d("BarcodeGraphicTracker", "Barcode detected, waiting for " + delayMillis + "ms");
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBarcodeUpdateListener.onBarcodeDetected(item);
+                    isWaiting = false;
+                    Log.d("BarcodeGraphicTracker", "Delay completed, barcode processed");
+                }
+            }, delayMillis);
+        } else {
+            Log.d("BarcodeGraphicTracker", "Still waiting, ignoring new detection");
+        }
     }
 
     /**

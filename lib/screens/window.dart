@@ -19,6 +19,7 @@ class WindowBarcodeScanner extends StatelessWidget {
   final String? appBarTitle;
   final bool? centerTitle;
   final BarcodeAppBar? barcodeAppBar;
+  final int? delayMillis;
 
   const WindowBarcodeScanner({
     super.key,
@@ -30,6 +31,7 @@ class WindowBarcodeScanner extends StatelessWidget {
     this.appBarTitle,
     this.centerTitle,
     this.barcodeAppBar,
+    this.delayMillis,
   });
 
   @override

@@ -18,6 +18,7 @@ class BarcodeScanner extends StatelessWidget {
   final bool? centerTitle;
   final Widget? child;
   final BarcodeAppBar? barcodeAppBar;
+  final int? delayMillis;
 
   const BarcodeScanner({
     super.key,
@@ -30,6 +31,7 @@ class BarcodeScanner extends StatelessWidget {
     this.appBarTitle,
     this.centerTitle,
     this.barcodeAppBar,
+    this.delayMillis,
   });
 
   @override
@@ -44,6 +46,7 @@ class BarcodeScanner extends StatelessWidget {
         onScanned: onScanned,
         appBarTitle: appBarTitle,
         centerTitle: centerTitle,
+        delayMillis: delayMillis,
       );
     } else {
       /// Scan Android and ios barcode scanner with flutter_barcode_scanner
@@ -71,7 +74,7 @@ class BarcodeScanner extends StatelessWidget {
         break;
     }
     String barcode = await FlutterBarcodeScanner.scanBarcode(
-        lineColor, cancelButtonText, isShowFlashIcon, scanMode);
+        lineColor, cancelButtonText, isShowFlashIcon, scanMode, delayMillis);
     onScanned(barcode);
   }
 }

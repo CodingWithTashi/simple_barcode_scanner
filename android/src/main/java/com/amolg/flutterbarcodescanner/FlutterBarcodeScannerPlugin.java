@@ -48,6 +48,7 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
     public static String lineColor = "";
     public static boolean isShowFlashIcon = false;
     public static boolean isContinuousScan = false;
+    public static int delayMillis = 0;
     static EventChannel.EventSink barcodeStream;
     private EventChannel eventChannel;
 
@@ -115,6 +116,10 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
 
                 isContinuousScan = (boolean) arguments.get("isContinuousScan");
 
+                if (null != arguments.get("delayMillis"))
+                    delayMillis = (int) arguments.get("delayMillis");
+
+
                 startBarcodeScannerActivityView((String) arguments.get("cancelButtonText"), isContinuousScan);
             }
         } catch (Exception e) {
@@ -124,7 +129,8 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
 
     private void startBarcodeScannerActivityView(String buttonText, boolean isContinuousScan) {
         try {
-            Intent intent = new Intent(activity, BarcodeCaptureActivity.class).putExtra("cancelButtonText", buttonText);
+            Intent intent = new Intent(activity, BarcodeCaptureActivity.class).putExtra("cancelButtonText", buttonText)
+                    .putExtra("delayMillis", delayMillis);
             if (isContinuousScan) {
                 activity.startActivity(intent);
             } else {

@@ -30,6 +30,9 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
 
   final BarcodeAppBar? barcodeAppBar;
 
+  /// Delay in milliseconds to start the scanner
+  final int? delayMillis;
+
   /// Specify a child widget to be positioned beneath the scanner.
   /// This is beneficial when you need to include a customized text field
   /// for manual entry of barcode/QR code.
@@ -66,7 +69,8 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
           'Use BarcodeAppBar instead. This field will be removed in future versions.')
       this.centerTitle,
       this.child,
-      this.barcodeAppBar});
+      this.barcodeAppBar,
+        this.delayMillis});
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +89,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       appBarTitle: appBarTitle,
       centerTitle: centerTitle,
       barcodeAppBar: barcodeAppBar,
+      delayMillis: delayMillis,
       child: child,
       onScanned: (res) {
         Navigator.pop(context, res);
