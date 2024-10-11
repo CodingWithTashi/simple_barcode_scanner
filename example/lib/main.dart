@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
                           enableBackButton: true,
                           backButtonIcon: Icon(Icons.arrow_back_ios),
                         ),
+                        delayMillis: 2000,
                         child: Column(
                           children: [
                             SizedBox(

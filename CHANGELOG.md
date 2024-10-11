@@ -1,3 +1,8 @@
+## 0.1.6
+* Added delay param for android
+* ios,web and window delay (WIP)
+* Code update for android and ios
+
 ## 0.1.5
 * Fixed depreciated issue
 * Added BarcodeAppBar class
