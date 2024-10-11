@@ -2,15 +2,15 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'flutter_barcode_scanner'
-  s.version          = '2.0.0'
-  s.summary          = 'A new Flutter plugin supports barcode scanning on both Android and iOS.'
+  s.name             = 'simple_barcode_scanner'
+  s.version          = '0.1.7'
+  s.summary          = 'simple_barcode_scanner that let you scan barcode and qr code in mobile, web and windows.'
   s.description      = <<-DESC
-A new Flutter plugin supports barcode scanning on both Android and iOS.
+simple_barcode_scanner that let you scan barcode and qr code in mobile, web and windows.
                        DESC
-  s.homepage         = 'https://github.com/AmolGangadhare/flutter_barcode_scanner'
+  s.homepage         = 'https://github.com/CodingWithTashi/simple_barcode_scanner'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Amol Gangadhare' => 'amol.gangadhare@gmail.com' }
+  s.author           = { 'Kunchok Tashi' => 'tashi@kharagedition.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*.{swift,h,m}'
   s.public_header_files = 'Classes/**/*.h'
