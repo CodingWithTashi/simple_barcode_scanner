@@ -54,8 +54,12 @@ class FlutterBarcodeScanner {
   /// displayed if [isShowFlashIcon] is true. The text of the cancel button can
   /// be customized with the [cancelButtonText] string. Returns a stream of
   /// detected barcode strings.
-  static Stream? getBarcodeStreamReceiver(String lineColor,
-      String cancelButtonText, bool isShowFlashIcon, ScanMode scanMode) {
+  static Stream? getBarcodeStreamReceiver(
+      String lineColor,
+      String cancelButtonText,
+      bool isShowFlashIcon,
+      ScanMode scanMode,
+      int? delayMillis) {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';
     }
@@ -66,7 +70,8 @@ class FlutterBarcodeScanner {
       'cancelButtonText': cancelButtonText,
       'isShowFlashIcon': isShowFlashIcon,
       'isContinuousScan': true,
-      'scanMode': scanMode.index
+      'scanMode': scanMode.index,
+      'delayMillis': delayMillis ?? 0
     };
 
     // Invoke method to open camera, and then create an event channel which will
