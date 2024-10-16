@@ -72,3 +72,11 @@ project, I'd appreciate your [🌟 on GitHub](https://github.com/CodingWithTashi
 
 ## You can also buy me a cup of coffee   
 <a href="https://www.buymeacoffee.com/codingwithtashi"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" width=200px></a>
+
+## publish
+
+```agsl
+dart pub publish --dry-run
+```
+```
+```

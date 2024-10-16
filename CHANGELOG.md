@@ -1,3 +1,6 @@
+## 0.1.7
+* IOS build issue fixed
+
 ## 0.1.6
 * Added delay param for android
 * ios,web and window delay (WIP)
