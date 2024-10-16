@@ -1,3 +1,7 @@
+<div style="background-color: #f0f8ff; color: #000; padding: 10px; border-radius: 5px; text-align: center;">
+  <strong>✊ We stand in solidarity with the Tibetan people in their struggle for freedom and cultural preservation. Learn more at <a href="https://www.freetibet.org" target="_blank">Free Tibet</a>.</strong>
+</div>
+
 # simple_barcode_scanner 
 
 simple_barcode_scanner that let you scan barcode and qr code in mobile,web and windows.
