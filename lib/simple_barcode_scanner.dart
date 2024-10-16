@@ -70,7 +70,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       this.centerTitle,
       this.child,
       this.barcodeAppBar,
-        this.delayMillis});
+      this.delayMillis});
 
   @override
   Widget build(BuildContext context) {
