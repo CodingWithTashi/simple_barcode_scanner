@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/enum.dart';
-import 'package:simple_barcode_scanner/screens/window.dart';
+// import 'package:simple_barcode_scanner/screens/window.dart';
 
 import '../barcode_appbar.dart';
 import '../flutter_barcode_scanner.dart';
@@ -36,27 +34,13 @@ class BarcodeScanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isWindows) {
-      ///Get Window barcode Scanner UI
-      return WindowBarcodeScanner(
-        lineColor: lineColor,
-        cancelButtonText: cancelButtonText,
-        isShowFlashIcon: isShowFlashIcon,
-        scanType: scanType,
-        onScanned: onScanned,
-        appBarTitle: appBarTitle,
-        centerTitle: centerTitle,
-        delayMillis: delayMillis,
-      );
-    } else {
-      /// Scan Android and ios barcode scanner with flutter_barcode_scanner
-      _scanBarcodeForMobileAndTabDevices();
-      return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+    /// Scan Android and ios barcode scanner with flutter_barcode_scanner
+    _scanBarcodeForMobileAndTabDevices();
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 
   _scanBarcodeForMobileAndTabDevices() async {
@@ -73,8 +57,8 @@ class BarcodeScanner extends StatelessWidget {
         scanMode = ScanMode.DEFAULT;
         break;
     }
-    String barcode = await FlutterBarcodeScanner.scanBarcode(
-        lineColor, cancelButtonText, isShowFlashIcon, scanMode, delayMillis);
+    String barcode =
+        await FlutterBarcodeScanner.scanBarcode(lineColor, cancelButtonText, isShowFlashIcon, scanMode, delayMillis);
     onScanned(barcode);
   }
 }
