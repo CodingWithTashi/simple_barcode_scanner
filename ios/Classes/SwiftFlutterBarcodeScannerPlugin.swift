@@ -22,7 +22,10 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
     public static var isContinuousScan:Bool=false
     static var barcodeStream:FlutterEventSink?=nil
     public static var scanMode = ScanMode.QR.index
-    
+    public static var delayMillis:Int=0
+    public static var delayTimer: Timer?
+
+
     public static func register(with registrar: FlutterPluginRegistrar) {
         viewController = (UIApplication.shared.delegate?.window??.rootViewController)!
         let channel = FlutterMethodChannel(name: "flutter_barcode_scanner", binaryMessenger: registrar.messenger())
@@ -77,6 +80,13 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
         }else {
             SwiftFlutterBarcodeScannerPlugin.isContinuousScan = false
         }
+
+         if let delayMillis = args["delayMillis"] as? Int{
+                    SwiftFlutterBarcodeScannerPlugin.delayMillis = delayMillis
+                }else {
+                    SwiftFlutterBarcodeScannerPlugin.delayMillis = 0
+                }
+
         
         if let scanModeReceived = args["scanMode"] as? Int {
             if scanModeReceived == ScanMode.DEFAULT.index {
@@ -585,15 +595,25 @@ extension BarcodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             // If the found metadata is equal to the QR code metadata (or barcode) then update the status label's text and set the bounds
             //            let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj)
             //qrCodeFrameView?.frame = barCodeObject!.bounds
-            if metadataObj.stringValue != nil {
-                if(SwiftFlutterBarcodeScannerPlugin.isContinuousScan){
-                    SwiftFlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode: metadataObj.stringValue!)
-                }else{
-                    launchApp(decodedURL: metadataObj.stringValue!)
-                }
+
+        if metadataObj.stringValue != nil {
+            // Cancel any existing timer
+            SwiftFlutterBarcodeScannerPlugin.delayTimer?.invalidate()
+
+            // Start a new timer
+            SwiftFlutterBarcodeScannerPlugin.delayTimer = Timer.scheduledTimer(withTimeInterval: Double(SwiftFlutterBarcodeScannerPlugin.delayMillis/1000), repeats: false) { [weak self] _ in
+                self?.processBarcode(metadataObj.stringValue!)
             }
         }
+        }
     }
+     private func processBarcode(_ barcode: String) {
+            if SwiftFlutterBarcodeScannerPlugin.isContinuousScan {
+                SwiftFlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode: barcode)
+            } else {
+                launchApp(decodedURL: barcode)
+            }
+        }
 }
 
 // Handle auto rotation
