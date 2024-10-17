@@ -79,4 +79,5 @@ project, I'd appreciate your [🌟 on GitHub](https://github.com/CodingWithTashi
 dart pub publish --dry-run
 ```
 ```
+dart pub publish
 ```

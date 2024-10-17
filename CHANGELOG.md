@@ -1,3 +1,7 @@
+## 0.1.8
+* IOS build issue fixed
+* Delay feature added for android and ios
+
 ## 0.1.7
 * IOS build issue fixed
 
