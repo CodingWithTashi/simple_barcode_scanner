@@ -7,6 +7,7 @@ import 'package:simple_barcode_scanner/screens/shared.dart';
 
 export 'package:simple_barcode_scanner/barcode_appbar.dart';
 export 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
+export 'package:simple_barcode_scanner/simple_barcode_scanner_plugin.dart';
 
 class SimpleBarcodeScannerPage extends StatelessWidget {
   ///Barcode line color default set to #ff6666
@@ -56,31 +57,11 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
 
   /// appBatTitle and centerTitle support in web and window only
   /// Remaining field support in only mobile devices
-  const SimpleBarcodeScannerPage(
-      {super.key,
-      this.lineColor = "#ff6666",
-      this.cancelButtonText = "Cancel",
-      this.isShowFlashIcon = false,
-      this.scanType = ScanType.barcode,
-      @Deprecated(
-          'Use BarcodeAppBar instead. This field will be removed in future versions.')
-      this.appBarTitle,
-      @Deprecated(
-          'Use BarcodeAppBar instead. This field will be removed in future versions.')
-      this.centerTitle,
-      this.child,
-      this.barcodeAppBar,
-      this.delayMillis});
+  const SimpleBarcodeScannerPage({super.key, this.lineColor = "#ff6666", this.cancelButtonText = "Cancel", this.isShowFlashIcon = false, this.scanType = ScanType.barcode, @Deprecated('Use BarcodeAppBar instead. This field will be removed in future versions.') this.appBarTitle, @Deprecated('Use BarcodeAppBar instead. This field will be removed in future versions.') this.centerTitle, this.child, this.barcodeAppBar, this.delayMillis});
 
   @override
   Widget build(BuildContext context) {
-    assert(
-        (appBarTitle == null && centerTitle == null) ||
-            barcodeAppBar == null ||
-            (appBarTitle != null &&
-                centerTitle != null &&
-                barcodeAppBar == null),
-        'Either provide both appBarTitle and centerTitle together, or provide barcodeAppBar, but not both.');
+    assert((appBarTitle == null && centerTitle == null) || barcodeAppBar == null || (appBarTitle != null && centerTitle != null && barcodeAppBar == null), 'Either provide both appBarTitle and centerTitle together, or provide barcodeAppBar, but not both.');
     return BarcodeScanner(
       lineColor: lineColor,
       cancelButtonText: cancelButtonText,
