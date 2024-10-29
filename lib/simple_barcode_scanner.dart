@@ -62,6 +62,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert((appBarTitle == null && centerTitle == null) || barcodeAppBar == null || (appBarTitle != null && centerTitle != null && barcodeAppBar == null), 'Either provide both appBarTitle and centerTitle together, or provide barcodeAppBar, but not both.');
+
     return BarcodeScanner(
       lineColor: lineColor,
       cancelButtonText: cancelButtonText,
