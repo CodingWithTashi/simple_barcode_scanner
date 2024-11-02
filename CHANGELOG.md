@@ -1,4 +1,4 @@
-## 2.0.0
+## 0.2.0
 * `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
 * Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method
 * Stream barcode with `SimpleBarcodeScanner` `streamBarcode` method
