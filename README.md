@@ -33,7 +33,7 @@ Window         |  Web
 ## Getting started
 
 ```dart
-simple_barcode_scanner: ^0.0.8
+simple_barcode_scanner: ^2.0.0
 
 ```   
 Import the library:
@@ -47,21 +47,21 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
    ElevatedButton(
               onPressed: () async {
 
-                    String? res = await SimpleBarcodeScanner.scanBarcode(
-                    context,
-                    barcodeAppBar: const BarcodeAppBar(
+String? res = await SimpleBarcodeScanner.scanBarcode(
+                  context,
+                  barcodeAppBar: const BarcodeAppBar(
                     appBarTitle: 'Test',
                     centerTitle: false,
                     enableBackButton: true,
                     backButtonIcon: Icon(Icons.arrow_back_ios),
-                    ),
-                    isShowFlashIcon: true,
-                    delayMillis: 2000,
-                    cameraFace: CameraFace.front,
-                    );
-                    setState(() {
-                    result = res as String;
-                    });
+                  ),
+                  isShowFlashIcon: true,
+                  delayMillis: 2000,
+                  cameraFace: CameraFace.front,
+                );
+                setState(() {
+                  result = res as String;
+                });
               },
               child: const Text('Open Scanner'),
             )
@@ -72,17 +72,17 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
               onPressed: () async {
 
                 SimpleBarcodeScanner.streamBarcode(
-                context,
-                barcodeAppBar: const BarcodeAppBar(
-                appBarTitle: 'Test',
-                centerTitle: false,
-                enableBackButton: true,
-                backButtonIcon: Icon(Icons.arrow_back_ios),
-                ),
-                isShowFlashIcon: true,
-                delayMillis: 2000,
+                  context,
+                  barcodeAppBar: const BarcodeAppBar(
+                    appBarTitle: 'Test',
+                    centerTitle: false,
+                    enableBackButton: true,
+                    backButtonIcon: Icon(Icons.arrow_back_ios),
+                  ),
+                  isShowFlashIcon: true,
+                  delayMillis: 2000,
                 ).listen((event) {
-                print("Stream Barcode Result: $event");
+                  print("Stream Barcode Result: $event");
                 });
               },
               child: const Text('Open Scanner'),
