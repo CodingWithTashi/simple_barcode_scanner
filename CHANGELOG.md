@@ -1,3 +1,10 @@
+## 2.0.0
+* `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
+* Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method
+* Stream barcode with `SimpleBarcodeScanner` `streamBarcode` method
+* Added `cameraFace` to switch between front and back camera,works only on android 
+* Updated example page
+
 ## 0.1.9
 * `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
 * Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method

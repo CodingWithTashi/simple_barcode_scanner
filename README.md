@@ -42,19 +42,47 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 ```
 ## Usage   
-
+1. To scan barcode
 ```dart
    ElevatedButton(
               onPressed: () async {
-                var res = await Navigator.push(
+
+                    String? res = await SimpleBarcodeScanner.scanBarcode(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const SimpleBarcodeScannerPage(),
-                    ));
-                setState(() {
-                  if (res is String) {
-                    result = res;
-                  }
+                    barcodeAppBar: const BarcodeAppBar(
+                    appBarTitle: 'Test',
+                    centerTitle: false,
+                    enableBackButton: true,
+                    backButtonIcon: Icon(Icons.arrow_back_ios),
+                    ),
+                    isShowFlashIcon: true,
+                    delayMillis: 2000,
+                    cameraFace: CameraFace.front,
+                    );
+                    setState(() {
+                    result = res as String;
+                    });
+              },
+              child: const Text('Open Scanner'),
+            )
+```   
+2. To stream barcode
+```dart
+   ElevatedButton(
+              onPressed: () async {
+
+                SimpleBarcodeScanner.streamBarcode(
+                context,
+                barcodeAppBar: const BarcodeAppBar(
+                appBarTitle: 'Test',
+                centerTitle: false,
+                enableBackButton: true,
+                backButtonIcon: Icon(Icons.arrow_back_ios),
+                ),
+                isShowFlashIcon: true,
+                delayMillis: 2000,
+                ).listen((event) {
+                print("Stream Barcode Result: $event");
                 });
               },
               child: const Text('Open Scanner'),
@@ -66,7 +94,8 @@ import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 ## Note
 Feel free to fork and send pull request.
-If you have any questions, feedback or ideas,You can [create an
+* iOS support may be delayed as I currently do not have access to an iOS device for testing. Contributions and testing help from the community are welcome!
+* If you have any questions, feedback or ideas,You can [create an
 issue](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/new). If you enjoy this
 project, I'd appreciate your [🌟 on GitHub](https://github.com/CodingWithTashi/simple_barcode_scanner/).   
 

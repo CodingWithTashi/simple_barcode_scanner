@@ -15,6 +15,7 @@ class WindowBarcodeScanner extends StatelessWidget {
   final String cancelButtonText;
   final bool isShowFlashIcon;
   final ScanType scanType;
+  final CameraFace cameraFace;
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
@@ -28,6 +29,7 @@ class WindowBarcodeScanner extends StatelessWidget {
     required this.cancelButtonText,
     required this.isShowFlashIcon,
     required this.scanType,
+    this.cameraFace = CameraFace.back,
     required this.onScanned,
     this.appBarTitle,
     this.centerTitle,

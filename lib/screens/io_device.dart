@@ -14,6 +14,7 @@ class BarcodeScanner extends StatelessWidget {
   final String cancelButtonText;
   final bool isShowFlashIcon;
   final ScanType scanType;
+  final CameraFace cameraFace;
   final Function(String) onScanned;
   final String? appBarTitle;
   final bool? centerTitle;
@@ -27,6 +28,7 @@ class BarcodeScanner extends StatelessWidget {
       required this.cancelButtonText,
       required this.isShowFlashIcon,
       required this.scanType,
+      this.cameraFace = CameraFace.back,
       required this.onScanned,
       this.child,
       this.appBarTitle,
@@ -79,14 +81,25 @@ class BarcodeScanner extends StatelessWidget {
 
   _scanBarcodeForMobileAndTabDevices(ScanMode scanMode) async {
     String barcode = await FlutterBarcodeScanner.scanBarcode(
-        lineColor, cancelButtonText, isShowFlashIcon, scanMode, delayMillis);
+      lineColor,
+      cancelButtonText,
+      isShowFlashIcon,
+      scanMode,
+      delayMillis,
+      cameraFace.name.toUpperCase(),
+    );
     onScanned(barcode);
   }
 
   void _streamBarcodeForMobileAndTabDevices(ScanMode scanMode) {
     FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            lineColor, cancelButtonText, isShowFlashIcon, scanMode, delayMillis)
-        ?.listen((barcode) {
+      lineColor,
+      cancelButtonText,
+      isShowFlashIcon,
+      scanMode,
+      delayMillis,
+      cameraFace.name.toUpperCase(),
+    )?.listen((barcode) {
       if (barcode != null) {
         barcode == kCancelValue ? onClose?.call() : onScanned(barcode);
       }

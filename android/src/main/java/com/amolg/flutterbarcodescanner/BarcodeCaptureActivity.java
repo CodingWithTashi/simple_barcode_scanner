@@ -57,6 +57,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -86,7 +87,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private ImageView imgViewSwitchCamera;
 
     public static int SCAN_MODE = SCAN_MODE_ENUM.QR.ordinal();
-
+    private int cameraFacing = CameraSource.CAMERA_FACING_BACK;
     public enum SCAN_MODE_ENUM {
         QR,
         BARCODE,
@@ -121,8 +122,10 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             setContentView(R.layout.barcode_capture);
 
             String buttonText = "";
+            String cameraFacingText = "";
             try {
                     buttonText = (String) getIntent().getStringExtra("cancelButtonText");
+                cameraFacingText = (String) getIntent().getStringExtra("cameraFacingText");
         } catch (Exception e) {
             buttonText = "Cancel";
             Log.e("BCActivity:onCreate()", "onCreate: " + e.getLocalizedMessage());
@@ -145,12 +148,13 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = true;
         boolean useFlash = false;
+        cameraFacing = Objects.equals(cameraFacingText, "FRONT") ?CameraSource.CAMERA_FACING_FRONT:CameraSource.CAMERA_FACING_BACK;
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
             if (rc == PackageManager.PERMISSION_GRANTED) {
-                createCameraSource(autoFocus, useFlash, CameraSource.CAMERA_FACING_BACK);
+                createCameraSource(autoFocus, useFlash, cameraFacing);
             } else {
                 requestCameraPermission();
             }
@@ -321,7 +325,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             // we have permission, so create the camerasource
             boolean autoFocus = true;
             boolean useFlash = false;
-            createCameraSource(autoFocus, useFlash, CameraSource.CAMERA_FACING_BACK);
+            createCameraSource(autoFocus, useFlash, cameraFacing);
             return;
         }
 
@@ -429,10 +433,10 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             onBackPressed();
 
         } else if (i == R.id.imgViewSwitchCamera) {
-            int currentFacing = mCameraSource.getCameraFacing();
+            cameraFacing = mCameraSource.getCameraFacing();
             boolean autoFocus = mCameraSource.getFocusMode() != null;
             boolean useFlash = flashStatus == USE_FLASH.ON.ordinal();
-            createCameraSource(autoFocus, useFlash, getInverseCameraFacing(currentFacing));
+            createCameraSource(autoFocus, useFlash, getInverseCameraFacing(cameraFacing));
             startCameraSource();
         }
     }

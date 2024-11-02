@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   isShowFlashIcon: true,
                   delayMillis: 2000,
+                  cameraFace: CameraFace.front,
                 );
                 setState(() {
                   result = res as String;

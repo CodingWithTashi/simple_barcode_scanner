@@ -8,6 +8,7 @@ import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/screens/shared.dart';
 
 export 'package:simple_barcode_scanner/barcode_appbar.dart';
+export 'package:simple_barcode_scanner/enum.dart';
 export 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class SimpleBarcodeScannerPage extends StatelessWidget {
@@ -124,6 +125,7 @@ class SimpleBarcodeScanner {
     String cancelButtonText = "Cancel",
     bool isShowFlashIcon = false,
     ScanType scanType = ScanType.barcode,
+    CameraFace cameraFace = CameraFace.back,
     BarcodeAppBar? barcodeAppBar,
     int? delayMillis,
     Widget? child,
@@ -136,6 +138,7 @@ class SimpleBarcodeScanner {
           cancelButtonText: cancelButtonText,
           isShowFlashIcon: isShowFlashIcon,
           scanType: scanType,
+          cameraFace: cameraFace,
           barcodeAppBar: barcodeAppBar,
           delayMillis: delayMillis,
           child: child,
@@ -155,6 +158,7 @@ class SimpleBarcodeScanner {
     String cancelButtonText = "Cancel",
     bool isShowFlashIcon = false,
     ScanType scanType = ScanType.barcode,
+    CameraFace cameraFace = CameraFace.back,
     BarcodeAppBar? barcodeAppBar,
     int? delayMillis,
     Widget? child,
@@ -170,6 +174,7 @@ class SimpleBarcodeScanner {
           cancelButtonText: cancelButtonText,
           isShowFlashIcon: isShowFlashIcon,
           scanType: scanType,
+          cameraFace: cameraFace,
           barcodeAppBar: barcodeAppBar,
           delayMillis: delayMillis,
           child: child,
