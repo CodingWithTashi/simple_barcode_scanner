@@ -2,6 +2,7 @@
 * `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
 * Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method
 * Stream barcode with `SimpleBarcodeScanner` `streamBarcode` method
+* Updated example page
 
 ## 0.1.8
 * IOS build issue fixed
