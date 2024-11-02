@@ -75,9 +75,10 @@ project, I'd appreciate your [🌟 on GitHub](https://github.com/CodingWithTashi
 
 ## publish
 
-```agsl
+```
 dart pub publish --dry-run
 ```
 ```
 dart pub publish
 ```
+

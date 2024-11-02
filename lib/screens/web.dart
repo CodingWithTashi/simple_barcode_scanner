@@ -20,6 +20,7 @@ class BarcodeScanner extends StatelessWidget {
   final Widget? child;
   final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
+  final Function? onClose;
 
   const BarcodeScanner({
     super.key,
@@ -33,6 +34,7 @@ class BarcodeScanner extends StatelessWidget {
     this.child,
     this.barcodeAppBar,
     this.delayMillis,
+    this.onClose,
   });
 
   @override

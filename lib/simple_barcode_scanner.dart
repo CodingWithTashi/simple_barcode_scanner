@@ -1,5 +1,7 @@
 library simple_barcode_scanner;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/barcode_appbar.dart';
 import 'package:simple_barcode_scanner/enum.dart';
@@ -56,6 +58,8 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
 
   /// appBatTitle and centerTitle support in web and window only
   /// Remaining field support in only mobile devices
+  @Deprecated(
+      'Use SimpleBarcodeScanner followed by scanBarcode instead. This field will be removed in future versions.')
   const SimpleBarcodeScannerPage(
       {super.key,
       this.lineColor = "#ff6666",
@@ -95,5 +99,95 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
         Navigator.pop(context, res);
       },
     );
+  }
+}
+
+/// A utility class for barcode scanning functionality.
+class SimpleBarcodeScanner {
+  /// Launches the barcode scanner interface and returns the scanned value.
+  ///
+  /// Parameters:
+  /// - [context]: The BuildContext required for navigation.
+  /// - [lineColor]: The color of the scanning line (default: "#ff6666").
+  /// - [cancelButtonText]: Text for the cancel button (default: "Cancel").
+  /// - [isShowFlashIcon]: Whether to show the flash toggle icon (default: false).
+  /// - [scanType]: The type of barcode to scan (default: ScanType.barcode).
+  /// - [barcodeAppBar]: Custom app bar configuration.
+  /// - [delayMillis]: Delay in milliseconds between scans.
+  /// - [child]: Optional widget to display in the scanner interface.
+  ///
+  /// Returns a [Future<String?>] that completes with the scanned value,
+  /// or null if scanning was cancelled.
+  static Future<String?> scanBarcode(
+    BuildContext context, {
+    String lineColor = "#ff6666",
+    String cancelButtonText = "Cancel",
+    bool isShowFlashIcon = false,
+    ScanType scanType = ScanType.barcode,
+    BarcodeAppBar? barcodeAppBar,
+    int? delayMillis,
+    Widget? child,
+  }) async {
+    return Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BarcodeScanner(
+          lineColor: lineColor,
+          cancelButtonText: cancelButtonText,
+          isShowFlashIcon: isShowFlashIcon,
+          scanType: scanType,
+          barcodeAppBar: barcodeAppBar,
+          delayMillis: delayMillis,
+          child: child,
+          onScanned: (res) => Navigator.pop(context, res),
+        ),
+      ),
+    );
+  }
+
+  /// Continuously scans barcodes and emits results through a stream.
+  ///
+  /// The stream continues until the scanner is closed or [stopScanning] is called.
+  /// Returns a [Stream<String>] of scanned barcode values.
+  static Stream<String> streamBarcode(
+    BuildContext context, {
+    String lineColor = "#ff6666",
+    String cancelButtonText = "Cancel",
+    bool isShowFlashIcon = false,
+    ScanType scanType = ScanType.barcode,
+    BarcodeAppBar? barcodeAppBar,
+    int? delayMillis,
+    Widget? child,
+  }) {
+    final streamController = StreamController<String>();
+    bool isPopped = false;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BarcodeScanner(
+          lineColor: lineColor,
+          cancelButtonText: cancelButtonText,
+          isShowFlashIcon: isShowFlashIcon,
+          scanType: scanType,
+          barcodeAppBar: barcodeAppBar,
+          delayMillis: delayMillis,
+          child: child,
+          onScanned: (res) {
+            streamController.add(res);
+            // Don't pop the navigator - keep scanning
+          },
+          onClose: () {
+            if (!isPopped) {
+              isPopped = true;
+              streamController.close();
+              Navigator.pop(context);
+            }
+          },
+        ),
+      ),
+    );
+
+    return streamController.stream;
   }
 }

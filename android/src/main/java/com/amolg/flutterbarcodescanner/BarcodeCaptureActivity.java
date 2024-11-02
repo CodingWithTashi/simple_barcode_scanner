@@ -100,6 +100,17 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     private int flashStatus = USE_FLASH.OFF.ordinal();
 
+
+    @Override
+    public void onBackPressed() {
+        Barcode barcode = new Barcode();
+        // -2 is the code for user cancelled the scan
+        barcode.rawValue = "-2";
+        barcode.displayValue = "-2";
+        FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
+        finish();
+    }
+
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -415,11 +426,8 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
                 Log.e("BarcodeCaptureActivity", "FlashOnFailure: " + e.getLocalizedMessage());
             }
         } else if (i == R.id.btnBarcodeCaptureCancel) {
-            Barcode barcode = new Barcode();
-            barcode.rawValue = "-1";
-            barcode.displayValue = "-1";
-            FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
-            finish();
+            onBackPressed();
+
         } else if (i == R.id.imgViewSwitchCamera) {
             int currentFacing = mCameraSource.getCameraFacing();
             boolean autoFocus = mCameraSource.getFocusMode() != null;
