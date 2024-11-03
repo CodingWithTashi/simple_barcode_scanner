@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
+import 'barcode_widget_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -82,6 +84,16 @@ class _HomePageState extends State<HomePage> {
               },
               child: const Text('Stream Barcode'),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return BarcodeWidgetPage();
+                  }));
+                },
+                child: Text('Barcode Scanner Widget(Android Only)'))
           ],
         ),
       ),
