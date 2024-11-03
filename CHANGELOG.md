@@ -1,3 +1,7 @@
+## 0.2.1
+* Added `SimpleBarcodeScanner` widget to scan barcode
+* Looking for feedback to improve the use case
+
 ## 0.2.0
 * `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
 * Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method
