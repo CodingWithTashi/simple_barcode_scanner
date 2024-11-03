@@ -9,6 +9,7 @@ import 'package:simple_barcode_scanner/screens/shared.dart';
 
 export 'package:simple_barcode_scanner/barcode_appbar.dart';
 export 'package:simple_barcode_scanner/enum.dart';
+export 'package:simple_barcode_scanner/screens/barcode_controller.dart';
 export 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class SimpleBarcodeScannerPage extends StatelessWidget {
@@ -104,8 +105,82 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
 }
 
 /// A utility class for barcode scanning functionality.
-class SimpleBarcodeScanner {
+/// Can be used both as a widget and through static methods.
+///
+/// Example usage as a widget:
+/// ```dart
+/// SimpleBarcodeScanner(
+///   onScanned: (code) {
+///     print('Scanned: $code');
+///   },
+///   continuous: true,
+/// )
+/// ```
+///
+/// Example usage as static method:
+/// ```dart
+/// final result = await SimpleBarcodeScanner.scanBarcode(context);
+/// ```
+///
+
+class SimpleBarcodeScanner extends StatelessWidget {
+  /// Callback function called when the scanner view is created.
+  final BarcodeScannerViewCreated onBarcodeViewCreated;
+
+  /// The width of the scanner view.
+  final double? width;
+
+  /// The height of the scanner view.
+  final double? height;
+
+  /// The color of the scanning line in hex format.
+  final String lineColor;
+
+  /// Whether to show the flash toggle icon.
+  final bool isShowFlashIcon;
+
+  /// The type of barcode to scan (e.g., barcode, QR code).
+  final ScanType scanType;
+
+  /// Which camera to use for scanning.
+  final CameraFace cameraFace;
+
+  /// Delay in milliseconds between consecutive scans.
+  final int? delayMillis;
+
+  /// Optional widget to display in the scanner interface.
+  final Widget? child;
+
+  /// Callback function called when a barcode is successfully scanned.
+  /// Provides the scanned string value.
+  final Function(String)? onScanned;
+
+  /// Whether to continuously scan barcodes (true) or stop after first scan (false).
+  final bool continuous;
+
+  /// Callback function called when the scanner is closed.
+  final VoidCallback? onClose;
+
+  /// Creates a new SimpleBarcodeScanner widget.
+  const SimpleBarcodeScanner(
+      {this.width,
+      this.height,
+      super.key,
+      this.lineColor = "#ff6666",
+      this.isShowFlashIcon = false,
+      this.scanType = ScanType.barcode,
+      this.cameraFace = CameraFace.back,
+      this.delayMillis,
+      this.child,
+      this.onScanned,
+      this.continuous = false,
+      this.onClose,
+      required this.onBarcodeViewCreated});
+
   /// Launches the barcode scanner interface and returns the scanned value.
+  ///
+  /// This is a one-time scan that will return after successfully scanning a barcode
+  /// or when the user cancels the scan.
   ///
   /// Parameters:
   /// - [context]: The BuildContext required for navigation.
@@ -113,6 +188,7 @@ class SimpleBarcodeScanner {
   /// - [cancelButtonText]: Text for the cancel button (default: "Cancel").
   /// - [isShowFlashIcon]: Whether to show the flash toggle icon (default: false).
   /// - [scanType]: The type of barcode to scan (default: ScanType.barcode).
+  /// - [cameraFace]: Which camera to use (default: CameraFace.back).
   /// - [barcodeAppBar]: Custom app bar configuration.
   /// - [delayMillis]: Delay in milliseconds between scans.
   /// - [child]: Optional widget to display in the scanner interface.
@@ -150,8 +226,22 @@ class SimpleBarcodeScanner {
 
   /// Continuously scans barcodes and emits results through a stream.
   ///
-  /// The stream continues until the scanner is closed or [stopScanning] is called.
-  /// Returns a [Stream<String>] of scanned barcode values.
+  /// This method will continue scanning and emitting barcode values until
+  /// the scanner is closed or manually stopped.
+  ///
+  /// Parameters:
+  /// - [context]: The BuildContext required for navigation.
+  /// - [lineColor]: The color of the scanning line (default: "#ff6666").
+  /// - [cancelButtonText]: Text for the cancel button (default: "Cancel").
+  /// - [isShowFlashIcon]: Whether to show the flash toggle icon (default: false).
+  /// - [scanType]: The type of barcode to scan (default: ScanType.barcode).
+  /// - [cameraFace]: Which camera to use (default: CameraFace.back).
+  /// - [barcodeAppBar]: Custom app bar configuration.
+  /// - [delayMillis]: Delay in milliseconds between scans.
+  /// - [child]: Optional widget to display in the scanner interface.
+  ///
+  /// Returns a [Stream<String>] that emits scanned barcode values.
+  /// The stream is closed when the scanner is closed.
   static Stream<String> streamBarcode(
     BuildContext context, {
     String lineColor = "#ff6666",
@@ -194,5 +284,23 @@ class SimpleBarcodeScanner {
     );
 
     return streamController.stream;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BarcodeScannerView(
+      height: height,
+      width: width,
+      lineColor: lineColor,
+      isShowFlashIcon: isShowFlashIcon,
+      scanType: scanType,
+      cameraFace: cameraFace,
+      delayMillis: delayMillis,
+      onScanned: onScanned,
+      continuous: continuous,
+      onClose: onClose,
+      onBarcodeViewCreated: onBarcodeViewCreated,
+      child: child,
+    );
   }
 }

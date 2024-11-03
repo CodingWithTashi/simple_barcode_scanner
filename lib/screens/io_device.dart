@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_barcode_scanner/enum.dart';
+import 'package:simple_barcode_scanner/screens/barcode_controller.dart';
 import 'package:simple_barcode_scanner/screens/window.dart';
 
 import '../barcode_appbar.dart';
@@ -104,5 +106,71 @@ class BarcodeScanner extends StatelessWidget {
         barcode == kCancelValue ? onClose?.call() : onScanned(barcode);
       }
     });
+  }
+}
+
+// This is for scanner Widget, which is used to scan the barcode.
+
+typedef BarcodeScannerViewCreated = void Function(
+    BarcodeViewController controller);
+
+/// for widgets
+class BarcodeScannerView extends StatelessWidget {
+  final BarcodeScannerViewCreated onBarcodeViewCreated;
+  final double? width;
+  final double? height;
+  final String lineColor;
+  final bool isShowFlashIcon;
+  final ScanType scanType;
+  final CameraFace cameraFace;
+  final Function(String)? onScanned;
+  final Widget? child;
+  final BarcodeAppBar? barcodeAppBar;
+  final int? delayMillis;
+  final Function? onClose;
+  final bool continuous;
+  const BarcodeScannerView(
+      {super.key,
+      this.width,
+      this.height,
+      required this.lineColor,
+      required this.isShowFlashIcon,
+      required this.scanType,
+      this.cameraFace = CameraFace.back,
+      required this.onScanned,
+      this.continuous = false,
+      this.child,
+      this.barcodeAppBar,
+      this.delayMillis,
+      this.onClose,
+      required this.onBarcodeViewCreated});
+
+  @override
+  Widget build(BuildContext context) {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return AndroidView(
+          viewType: 'plugins.codingwithtashi/barcode_scanner_view',
+          onPlatformViewCreated: _onPlatformViewCreated,
+        );
+      case TargetPlatform.iOS:
+        return UiKitView(
+          viewType: 'plugins.codingwithtashi/barcode_scanner_view',
+          onPlatformViewCreated: _onPlatformViewCreated,
+        );
+      default:
+        return Text(
+            '$defaultTargetPlatform is not yet supported by the web_view plugin');
+    }
+  }
+
+  // Callback method when platform view is created
+
+  void _onPlatformViewCreated(int id) {
+    final controller = BarcodeViewController.data(id);
+    if (onScanned != null) {
+      controller.setOnScanned(onScanned!);
+    }
+    onBarcodeViewCreated(controller);
   }
 }

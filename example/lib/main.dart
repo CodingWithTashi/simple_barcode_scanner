@@ -29,6 +29,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  BarcodeViewController? controller;
   String result = '';
   @override
   Widget build(BuildContext context) {
@@ -81,6 +82,41 @@ class _HomePageState extends State<HomePage> {
                 });
               },
               child: const Text('Stream Barcode'),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+                width: 200,
+                height: 200,
+                child: SimpleBarcodeScanner(
+                  onScanned: (code) {
+                    setState(() {
+                      result = code;
+                    });
+                  },
+                  continuous: true,
+                  onBarcodeViewCreated: (BarcodeViewController controller) {
+                    this.controller = controller;
+                  },
+                )),
+            ElevatedButton(
+              onPressed: () {
+                controller?.toggleFlash();
+              },
+              child: Text("Switch"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                controller?.pauseScanning();
+              },
+              child: Text("Pause"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                controller?.resumeScanning();
+              },
+              child: Text("Resume"),
             ),
           ],
         ),

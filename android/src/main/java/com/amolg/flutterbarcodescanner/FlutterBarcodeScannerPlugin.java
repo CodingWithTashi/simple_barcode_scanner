@@ -11,6 +11,7 @@ import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
+import com.amolg.flutterbarcodescanner.widget.BarcodeViewFactory;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
@@ -220,6 +221,10 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
     @Override
     public void onAttachedToEngine(FlutterPluginBinding binding) {
         pluginBinding = binding;
+        binding.getPlatformViewRegistry().registerViewFactory(
+                "plugins.codingwithtashi/barcode_scanner_view",
+                new BarcodeViewFactory(binding.getBinaryMessenger())
+        );
     }
 
     @Override
