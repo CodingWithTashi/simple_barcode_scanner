@@ -128,10 +128,10 @@ class SimpleBarcodeScanner extends StatelessWidget {
   final BarcodeScannerViewCreated onBarcodeViewCreated;
 
   /// The width of the scanner view.
-  final double? width;
+  final double? scaleWidth;
 
   /// The height of the scanner view.
-  final double? height;
+  final double? scaleHeight;
 
   /// The color of the scanning line in hex format.
   final String lineColor;
@@ -163,8 +163,8 @@ class SimpleBarcodeScanner extends StatelessWidget {
 
   /// Creates a new SimpleBarcodeScanner widget.
   const SimpleBarcodeScanner(
-      {this.width,
-      this.height,
+      {this.scaleWidth,
+      this.scaleHeight,
       super.key,
       this.lineColor = "#ff6666",
       this.isShowFlashIcon = false,
@@ -289,10 +289,8 @@ class SimpleBarcodeScanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BarcodeScannerView(
-      height: height,
-      width: width,
-      lineColor: lineColor,
-      isShowFlashIcon: isShowFlashIcon,
+      scannerHeight: scaleHeight,
+      scannerWidth: scaleWidth,
       scanType: scanType,
       cameraFace: cameraFace,
       delayMillis: delayMillis,

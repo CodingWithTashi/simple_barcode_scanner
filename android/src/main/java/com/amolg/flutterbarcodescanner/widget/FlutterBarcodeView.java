@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -30,12 +29,11 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 
-
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 public class FlutterBarcodeView implements PlatformView{
-
 
     private static final String TAG = "FlutterBarcodeView";
     private final Context context;
@@ -49,37 +47,45 @@ public class FlutterBarcodeView implements PlatformView{
     private boolean isDetecting = true;
     private boolean isFlashOn = false;
     private final Handler mainHandler;
-    private final int SCAN_AREA_WIDTH = 800;
-    private final int SCAN_AREA_HEIGHT = 800;
 
-    public FlutterBarcodeView(Context context, BinaryMessenger messenger, int id) {
+    // Make scan area smaller than camera view
+    /// 400, 200 for barcode
+    private static  int SCAN_AREA_WIDTH = 400;
+    private static  int SCAN_AREA_HEIGHT = 200;
+    private ParamData paramData;
+
+    public FlutterBarcodeView(Context context, BinaryMessenger messenger, int id, Object creationParams) {
         this.context = context;
         this.mainHandler = new Handler(Looper.getMainLooper());
-
-        // Create main container
+         this.paramData = ParamData.fromMap((Map<String, Object>) creationParams);
+        setDefaultData();
+        // Main container
         frameLayout = new FrameLayout(context);
+        frameLayout.setLayoutParams(new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
-        // Create and add surface view
+        // Camera preview
         surfaceView = new SurfaceView(context);
         frameLayout.addView(surfaceView, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
-        // Create and add scanner overlay
+        // Scanner overlay with rectangle and opacity
         scannerOverlay = new ScannerOverlay(context);
         frameLayout.addView(scannerOverlay, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
-        // Create and add scan line
+        // Scanning line
         scanLine = new ImageView(context);
         scanLine.setBackgroundColor(Color.RED);
-        FrameLayout.LayoutParams scanLineParams = new FrameLayout.LayoutParams(
+        FrameLayout.LayoutParams lineParams = new FrameLayout.LayoutParams(
                 SCAN_AREA_WIDTH - 40, // Slightly smaller than scan area
-                5); // Line thickness
-        frameLayout.addView(scanLine, scanLineParams);
+                5); // Height of the line
+        frameLayout.addView(scanLine, lineParams);
 
-        // Start scan line animation
+        // Start scanning animation
         startScanLineAnimation();
 
         methodChannel = new MethodChannel(messenger, "plugins.codingwithtashi/barcode_scanner_view_" + id);
@@ -90,58 +96,85 @@ public class FlutterBarcodeView implements PlatformView{
         setupSurfaceHolder();
     }
 
+    private void setDefaultData() {
+        SCAN_AREA_WIDTH = paramData.getScannerWidth()!=null?paramData.getScannerWidth():SCAN_AREA_WIDTH;
+        SCAN_AREA_HEIGHT = paramData.getScannerHeight()!=null?paramData.getScannerHeight():SCAN_AREA_HEIGHT;
+    }
+
+    private int getScreenWidth() {
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
+
+    private int getScreenHeight() {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
     private void startScanLineAnimation() {
-        TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0f,
-                Animation.RELATIVE_TO_PARENT, 0f,
-                Animation.RELATIVE_TO_PARENT, 0f,
-                Animation.RELATIVE_TO_PARENT, 0.8f);
-        animation.setDuration(3000);
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setRepeatMode(Animation.REVERSE);
-        scanLine.startAnimation(animation);
+        scanLine.post(() -> {
+            // Position the line at the top of scan area
+            int scanAreaTop = (surfaceView.getHeight() - SCAN_AREA_HEIGHT) / 2;
+            int scanAreaLeft = (surfaceView.getWidth() - SCAN_AREA_WIDTH) / 2;
+
+            scanLine.setX(scanAreaLeft + 20); // 20px margin from the sides
+            scanLine.setY(scanAreaTop);
+
+            // Create the animation
+            TranslateAnimation animation = new TranslateAnimation(
+                    0, 0, // X axis - no movement
+                    0, SCAN_AREA_HEIGHT - 5); // Y axis - move down by scan area height
+
+            animation.setDuration(3000); // 3 seconds for one sweep
+            animation.setRepeatCount(Animation.INFINITE);
+            animation.setRepeatMode(Animation.REVERSE);
+
+            scanLine.startAnimation(animation);
+        });
     }
 
     private class ScannerOverlay extends View {
         private final Paint boxPaint;
-        private final Paint transparentPaint;
-        private final int boxCornerRadius = 20;
+        private final Paint overlayPaint;
 
         public ScannerOverlay(Context context) {
             super(context);
+
+            // Paint for the white rectangle
             boxPaint = new Paint();
             boxPaint.setColor(Color.WHITE);
             boxPaint.setStyle(Paint.Style.STROKE);
             boxPaint.setStrokeWidth(5f);
 
-            transparentPaint = new Paint();
-            transparentPaint.setColor(Color.parseColor("#80000000")); // Semi-transparent black
-            transparentPaint.setStyle(Paint.Style.FILL);
+            // Paint for the semi-transparent overlay
+            overlayPaint = new Paint();
+            overlayPaint.setColor(Color.parseColor("#80000000")); // Semi-transparent black
+            overlayPaint.setStyle(Paint.Style.FILL);
         }
 
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+
             int width = getWidth();
             int height = getHeight();
 
-            // Calculate scanner box position (centered)
+            // Calculate the position of scan area (centered)
             int left = (width - SCAN_AREA_WIDTH) / 2;
             int top = (height - SCAN_AREA_HEIGHT) / 2;
             int right = left + SCAN_AREA_WIDTH;
             int bottom = top + SCAN_AREA_HEIGHT;
 
-            // Draw transparent overlay
-            canvas.drawRect(0, 0, width, top, transparentPaint); // Top
-            canvas.drawRect(0, top, left, bottom, transparentPaint); // Left
-            canvas.drawRect(right, top, width, bottom, transparentPaint); // Right
-            canvas.drawRect(0, bottom, width, height, transparentPaint); // Bottom
+            // Draw semi-transparent overlay outside scan area
+            canvas.drawRect(0, 0, width, top, overlayPaint); // Top
+            canvas.drawRect(0, top, left, bottom, overlayPaint); // Left
+            canvas.drawRect(right, top, width, bottom, overlayPaint); // Right
+            canvas.drawRect(0, bottom, width, height, overlayPaint); // Bottom
 
-            // Draw scanner box
-            RectF boxRect = new RectF(left, top, right, bottom);
-            canvas.drawRoundRect(boxRect, boxCornerRadius, boxCornerRadius, boxPaint);
+            // Draw white rectangle for scan area
+            canvas.drawRect(left, top, right, bottom, boxPaint);
         }
     }
+
+
 
     private void setupBarcodeDetector() {
         barcodeDetector = new BarcodeDetector.Builder(context)
@@ -149,39 +182,66 @@ public class FlutterBarcodeView implements PlatformView{
                 .build();
 
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
-            private final Rect scanArea = new Rect();
-
             @Override
             public void release() {}
 
             @Override
-            public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
-                if (!isDetecting) return;
-
-                // Calculate scan area boundaries
-                int width = surfaceView.getWidth();
-                int height = surfaceView.getHeight();
-                int left = (width - SCAN_AREA_WIDTH) / 2;
-                int top = (height - SCAN_AREA_HEIGHT) / 2;
-                scanArea.set(left, top, left + SCAN_AREA_WIDTH, top + SCAN_AREA_HEIGHT);
+            public void receiveDetections(Detector.Detections<Barcode> detections) { if (!isDetecting) return;
 
                 final android.util.SparseArray<Barcode> barcodes = detections.getDetectedItems();
+
                 if (barcodes.size() > 0) {
-                    final Barcode code = barcodes.valueAt(0);
-                    System.out.println("Barcode detected: " + code.rawValue);
+                    // Get the preview size from camera parameters
+                    Camera camera = getCamera();
+                    Camera.Parameters parameters = camera.getParameters();
+                    Camera.Size previewSize = parameters.getPreviewSize();
+
+                    // Calculate scaling factors
+                    float scaleX = (float) surfaceView.getWidth() / previewSize.width;
+                    float scaleY = (float) surfaceView.getHeight() / previewSize.height;
+
+                    // Calculate scan area in normalized coordinates
+                    int scanAreaLeft = (surfaceView.getWidth() - SCAN_AREA_WIDTH) / 2;
+                    int scanAreaTop = (surfaceView.getHeight() - SCAN_AREA_HEIGHT) / 2;
+
+                    RectF scanArea = new RectF(
+                            scanAreaLeft,
+                            scanAreaTop,
+                            scanAreaLeft + SCAN_AREA_WIDTH,
+                            scanAreaTop + SCAN_AREA_HEIGHT
+                    );
+
                     for (int i = 0; i < barcodes.size(); i++) {
                         Barcode barcode = barcodes.valueAt(i);
-                        // Check if barcode is within scan area
-                        if (scanArea.contains(barcode.getBoundingBox())) {
-                            mainHandler.post(() -> {
-                                        methodChannel.invokeMethod("onBarcodeDetected", barcode.rawValue);
-                                    }
-                            );
-                            return;
+
+                        // Scale the barcode coordinates to match the preview view
+                        RectF scaledBarcodeRect = new RectF(
+                                barcode.getBoundingBox().left * scaleX,
+                                barcode.getBoundingBox().top * scaleY,
+                                barcode.getBoundingBox().right * scaleX,
+                                barcode.getBoundingBox().bottom * scaleY
+                        );
+
+                        // Check if the scaled barcode intersects with the scan area
+                        if (RectF.intersects(scanArea, scaledBarcodeRect)) {
+                            // Calculate overlap percentage
+                            RectF intersection = new RectF();
+                            intersection.setIntersect(scanArea, scaledBarcodeRect);
+                            float overlapArea = intersection.width() * intersection.height();
+                            float barcodeArea = scaledBarcodeRect.width() * scaledBarcodeRect.height();
+                            float overlapPercentage = (overlapArea / barcodeArea) * 100;
+                            System.out.println("Overlap percentage: " + overlapPercentage);
+                            // If more than 100% of the barcode is within the scan area
+                            if (overlapPercentage >= 100) {
+
+                                mainHandler.post(() ->
+                                        methodChannel.invokeMethod("onBarcodeDetected", barcode.rawValue)
+                                );
+                                return;
+                            }
                         }
                     }
                 }
-
             }
         });
     }
@@ -204,11 +264,7 @@ public class FlutterBarcodeView implements PlatformView{
                 try {
                     cameraSource.start(surfaceView.getHolder());
                 } catch (IOException e) {
-                    Log.e(TAG, "Error starting camera source: " + e.getMessage());
-                    methodChannel.invokeMethod("onError", "Failed to start camera: " + e.getMessage());
-                } catch (SecurityException e) {
-                    Log.e(TAG, "Camera permission not granted: " + e.getMessage());
-                    methodChannel.invokeMethod("onError", "Camera permission not granted");
+                    Log.e(TAG, "Error starting camera: " + e.getMessage());
                 }
             }
 

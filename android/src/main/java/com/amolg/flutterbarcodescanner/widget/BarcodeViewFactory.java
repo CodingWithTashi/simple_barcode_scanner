@@ -15,7 +15,7 @@ public class BarcodeViewFactory extends PlatformViewFactory {
     }
 
     @Override
-    public PlatformView create(Context context, int id, Object args) {
-        return new FlutterBarcodeView(context, messenger, id);
+    public PlatformView create(Context context, int id, Object creationParams) {
+        return new FlutterBarcodeView(context, messenger, id,creationParams);
     }
 }

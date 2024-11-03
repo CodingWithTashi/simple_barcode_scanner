@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/screens/barcode_controller.dart';
 import 'package:simple_barcode_scanner/screens/window.dart';
@@ -117,30 +118,24 @@ typedef BarcodeScannerViewCreated = void Function(
 /// for widgets
 class BarcodeScannerView extends StatelessWidget {
   final BarcodeScannerViewCreated onBarcodeViewCreated;
-  final double? width;
-  final double? height;
-  final String lineColor;
-  final bool isShowFlashIcon;
+  final double? scannerWidth;
+  final double? scannerHeight;
   final ScanType scanType;
   final CameraFace cameraFace;
   final Function(String)? onScanned;
   final Widget? child;
-  final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
   final Function? onClose;
   final bool continuous;
   const BarcodeScannerView(
       {super.key,
-      this.width,
-      this.height,
-      required this.lineColor,
-      required this.isShowFlashIcon,
+      this.scannerWidth,
+      this.scannerHeight,
       required this.scanType,
       this.cameraFace = CameraFace.back,
       required this.onScanned,
       this.continuous = false,
       this.child,
-      this.barcodeAppBar,
       this.delayMillis,
       this.onClose,
       required this.onBarcodeViewCreated});
@@ -152,11 +147,29 @@ class BarcodeScannerView extends StatelessWidget {
         return AndroidView(
           viewType: 'plugins.codingwithtashi/barcode_scanner_view',
           onPlatformViewCreated: _onPlatformViewCreated,
+          creationParams: <String, dynamic>{
+            'scanType': scanType.index,
+            'cameraFace': cameraFace.index,
+            'delayMillis': delayMillis,
+            'continuous': continuous,
+            'scannerWidth': scannerWidth?.toInt(),
+            'scannerHeight': scannerHeight?.toInt(),
+          },
+          creationParamsCodec: const StandardMessageCodec(),
         );
       case TargetPlatform.iOS:
         return UiKitView(
           viewType: 'plugins.codingwithtashi/barcode_scanner_view',
           onPlatformViewCreated: _onPlatformViewCreated,
+          creationParams: <String, dynamic>{
+            'scanType': scanType.index,
+            'cameraFace': cameraFace.index,
+            'delayMillis': delayMillis,
+            'continuous': continuous,
+            'scannerWidth': scannerWidth?.toInt(),
+            'scannerHeight': scannerHeight?.toInt(),
+          },
+          creationParamsCodec: const StandardMessageCodec(),
         );
       default:
         return Text(

@@ -42,30 +42,24 @@ typedef BarcodeScannerViewCreated = void Function(
 
 class BarcodeScannerView extends StatelessWidget {
   final BarcodeScannerViewCreated onBarcodeViewCreated;
-  final String lineColor;
-  final bool isShowFlashIcon;
   final ScanType scanType;
   final CameraFace cameraFace;
   final Function(String)? onScanned;
   final Widget? child;
-  final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
   final Function? onClose;
   final bool continuous;
-  final double? width;
-  final double? height;
+  final double? scannerWidth;
+  final double? scannerHeight;
   const BarcodeScannerView(
       {super.key,
-      this.width,
-      this.height,
-      required this.lineColor,
-      required this.isShowFlashIcon,
+      this.scannerWidth,
+      this.scannerHeight,
       required this.scanType,
       this.cameraFace = CameraFace.back,
       required this.onScanned,
       this.continuous = false,
       this.child,
-      this.barcodeAppBar,
       this.delayMillis,
       this.onClose,
       required this.onBarcodeViewCreated});
