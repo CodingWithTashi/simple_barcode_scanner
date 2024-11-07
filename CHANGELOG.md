@@ -1,3 +1,5 @@
+## 0.2.2
+* Fixed web https://github.com/CodingWithTashi/simple_barcode_scanner/issues/85
 ## 0.2.1
 * Added `SimpleBarcodeScanner` widget to scan barcode
 * Looking for feedback to improve the use case

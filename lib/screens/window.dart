@@ -9,6 +9,7 @@ import 'package:simple_barcode_scanner/enum.dart';
 import 'package:webview_windows/webview_windows.dart';
 
 import '../barcode_appbar.dart';
+import 'barcode_controller.dart';
 
 class WindowBarcodeScanner extends StatelessWidget {
   final String lineColor;
@@ -191,5 +192,38 @@ class WindowBarcodeScanner extends StatelessWidget {
         icon: const Icon(Icons.arrow_back_ios),
       ),
     );
+  }
+}
+
+typedef BarcodeScannerViewCreated = void Function(
+    BarcodeViewController controller);
+
+class BarcodeScannerView extends StatelessWidget {
+  final BarcodeScannerViewCreated onBarcodeViewCreated;
+  final ScanType scanType;
+  final CameraFace cameraFace;
+  final Function(String)? onScanned;
+  final Widget? child;
+  final int? delayMillis;
+  final Function? onClose;
+  final bool continuous;
+  final double? scannerWidth;
+  final double? scannerHeight;
+  const BarcodeScannerView(
+      {super.key,
+      this.scannerWidth,
+      this.scannerHeight,
+      required this.scanType,
+      this.cameraFace = CameraFace.back,
+      required this.onScanned,
+      this.continuous = false,
+      this.child,
+      this.delayMillis,
+      this.onClose,
+      required this.onBarcodeViewCreated});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: Text('Platform not supported'));
   }
 }
