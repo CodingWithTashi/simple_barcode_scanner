@@ -35,9 +35,9 @@ class _BarcodeWidgetPageState extends State<BarcodeWidgetPage> {
                     this.controller = controller;
                   },
                 )),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Text(result),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 controller?.toggleFlash();
@@ -48,13 +48,13 @@ class _BarcodeWidgetPageState extends State<BarcodeWidgetPage> {
               onPressed: () {
                 controller?.pauseScanning();
               },
-              child: Text("Pause Scanning"),
+              child: const Text("Pause Scanning"),
             ),
             ElevatedButton(
               onPressed: () {
                 controller?.resumeScanning();
               },
-              child: Text("Resume Scanning"),
+              child: const Text("Resume Scanning"),
             ),
           ],
         ),

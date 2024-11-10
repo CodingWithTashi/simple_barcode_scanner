@@ -90,10 +90,10 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return BarcodeWidgetPage();
+                    return const BarcodeWidgetPage();
                   }));
                 },
-                child: Text('Barcode Scanner Widget(Android Only)'))
+                child: const Text('Barcode Scanner Widget(Android Only)'))
           ],
         ),
       ),
