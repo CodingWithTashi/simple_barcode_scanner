@@ -88,6 +88,29 @@ String? res = await SimpleBarcodeScanner.scanBarcode(
               child: const Text('Open Scanner'),
             )
 ```   
+
+2. To use widget
+```dart
+   ElevatedButton(
+              onPressed: () async {
+
+                SimpleBarcodeScanner.streamBarcode(
+                  context,
+                  barcodeAppBar: const BarcodeAppBar(
+                    appBarTitle: 'Test',
+                    centerTitle: false,
+                    enableBackButton: true,
+                    backButtonIcon: Icon(Icons.arrow_back_ios),
+                  ),
+                  isShowFlashIcon: true,
+                  delayMillis: 2000,
+                ).listen((event) {
+                  print("Stream Barcode Result: $event");
+                });
+              },
+              child: const Text('Open Scanner'),
+            )
+```   
 ## Todo   
 * Flash and switch camera are only available in mobile devices
 * Enhancement
