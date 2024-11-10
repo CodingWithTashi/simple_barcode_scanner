@@ -87,6 +87,25 @@ String? res = await SimpleBarcodeScanner.scanBarcode(
               },
               child: const Text('Open Scanner'),
             )
+```
+3. To Scan with widget(Android Only)
+```dart
+   SizedBox(
+                width: 200,
+                height: 200,
+                child: SimpleBarcodeScanner(
+                  scaleHeight: 200,
+                  scaleWidth: 400,
+                  onScanned: (code) {
+                    setState(() {
+                      result = code;
+                    });
+                  },
+                  continuous: true,
+                  onBarcodeViewCreated: (BarcodeViewController controller) {
+                    this.controller = controller;
+                  },
+                )),
 ```   
 
 2. To use widget
