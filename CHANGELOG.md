@@ -1,3 +1,5 @@
+## 0.2.4
+* Downgraded SDK from 35 to 34 to support older flutter project
 ## 0.2.3
 * Fixed web build issue
 ## 0.2.2
