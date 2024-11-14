@@ -22,11 +22,11 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 35
+    compileSdkVersion 34
     namespace "com.amolg.flutterbarcodescanner"
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 35
+        targetSdkVersion 34
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
