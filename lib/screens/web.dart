@@ -23,6 +23,7 @@ class BarcodeScanner extends StatelessWidget {
   final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
   final Function? onClose;
+  final ScanFormat scanFormat;
 
   const BarcodeScanner({
     super.key,
@@ -38,6 +39,7 @@ class BarcodeScanner extends StatelessWidget {
     this.barcodeAppBar,
     this.delayMillis,
     this.onClose,
+    this.scanFormat = ScanFormat.ALL_FORMATS,
   });
 
   @override
@@ -130,6 +132,7 @@ class BarcodeScannerView extends StatelessWidget {
   final bool continuous;
   final double? scannerWidth;
   final double? scannerHeight;
+  final ScanFormat scanFormat;
   const BarcodeScannerView(
       {super.key,
       this.scannerWidth,
@@ -141,6 +144,7 @@ class BarcodeScannerView extends StatelessWidget {
       this.child,
       this.delayMillis,
       this.onClose,
+      this.scanFormat = ScanFormat.ALL_FORMATS,
       required this.onBarcodeViewCreated});
 
   @override

@@ -116,6 +116,8 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
                     BarcodeCaptureActivity.SCAN_MODE = BarcodeCaptureActivity.SCAN_MODE_ENUM.QR.ordinal();
                 }
 
+                setScanFormat();
+
                 isContinuousScan = (boolean) arguments.get("isContinuousScan");
 
                 cameraFacingText = (String) arguments.get("cameraFacingText");
@@ -129,6 +131,24 @@ public class FlutterBarcodeScannerPlugin implements MethodCallHandler, ActivityR
         } catch (Exception e) {
             Log.e(TAG, "onMethodCall: " + e.getLocalizedMessage());
         }
+    }
+
+    private void setScanFormat() {
+        BarcodeCaptureActivity.SCAN_FORMAT_ENUM format = BarcodeCaptureActivity.SCAN_FORMAT_ENUM.ALL_FORMATS;
+        if (null != arguments.get("scanFormat")) {
+            String scanFormat = (String) arguments.get("scanFormat");
+
+            assert scanFormat != null;
+            switch (scanFormat.toUpperCase()) {
+                case "ONLY_QR_CODE":
+                    format = BarcodeCaptureActivity.SCAN_FORMAT_ENUM.ONLY_QR_CODE;
+                    break;
+                case "ONLY_BARCODE":
+                    format = BarcodeCaptureActivity.SCAN_FORMAT_ENUM.ONLY_BARCODE;
+                    break;
+            }
+        }
+        BarcodeCaptureActivity.SCAN_FORMAT = format;
     }
 
     private void startBarcodeScannerActivityView(String buttonText, boolean isContinuousScan, String cameraFacingText) {

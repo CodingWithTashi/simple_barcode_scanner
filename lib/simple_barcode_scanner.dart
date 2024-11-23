@@ -127,6 +127,9 @@ class SimpleBarcodeScanner extends StatelessWidget {
   /// Callback function called when the scanner view is created.
   final BarcodeScannerViewCreated onBarcodeViewCreated;
 
+  /// The format of the barcode to scan. Default is ALL_FORMATS (e.g., ONLY_QR_CODE, ONLY_BARCODE). Only works on Android and iOS. Web will scan all formats.
+  final ScanFormat scanFormat;
+
   /// The width of the scanner view.
   final double? scaleWidth;
 
@@ -175,6 +178,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
       this.onScanned,
       this.continuous = false,
       this.onClose,
+      this.scanFormat = ScanFormat.ALL_FORMATS,
       required this.onBarcodeViewCreated});
 
   /// Launches the barcode scanner interface and returns the scanned value.
@@ -205,6 +209,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
     BarcodeAppBar? barcodeAppBar,
     int? delayMillis,
     Widget? child,
+    ScanFormat scanFormat = ScanFormat.ALL_FORMATS,
   }) async {
     return Navigator.push<String>(
       context,
@@ -217,8 +222,9 @@ class SimpleBarcodeScanner extends StatelessWidget {
           cameraFace: cameraFace,
           barcodeAppBar: barcodeAppBar,
           delayMillis: delayMillis,
-          child: child,
+          scanFormat: scanFormat,
           onScanned: (res) => Navigator.pop(context, res),
+          child: child,
         ),
       ),
     );
@@ -251,6 +257,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
     CameraFace cameraFace = CameraFace.back,
     BarcodeAppBar? barcodeAppBar,
     int? delayMillis,
+    ScanFormat scanFormat = ScanFormat.ALL_FORMATS,
     Widget? child,
   }) {
     final streamController = StreamController<String>();
@@ -267,7 +274,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
           cameraFace: cameraFace,
           barcodeAppBar: barcodeAppBar,
           delayMillis: delayMillis,
-          child: child,
+          scanFormat: scanFormat,
           onScanned: (res) {
             streamController.add(res);
             // Don't pop the navigator - keep scanning
@@ -279,6 +286,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
               Navigator.pop(context);
             }
           },
+          child: child,
         ),
       ),
     );
@@ -298,6 +306,7 @@ class SimpleBarcodeScanner extends StatelessWidget {
       continuous: continuous,
       onClose: onClose,
       onBarcodeViewCreated: onBarcodeViewCreated,
+      scanFormat: scanFormat,
       child: child,
     );
   }

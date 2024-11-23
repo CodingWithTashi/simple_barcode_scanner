@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+import 'enum.dart';
+
 /// Please note that this code is reimplementation of https://github.com/AmolGangadhare/flutter_barcode_scanner, since
 /// the package is not updated for quite sometime, I have added here
 /// Scan mode which is either QR code or BARCODE
@@ -26,12 +28,14 @@ class FlutterBarcodeScanner {
   /// displayed if [isShowFlashIcon] is true. The text of the cancel button can
   /// be customized with the [cancelButtonText] string.
   static Future<String> scanBarcode(
-      String lineColor,
-      String cancelButtonText,
-      bool isShowFlashIcon,
-      ScanMode scanMode,
-      int? delayMillis,
-      String cameraFace) async {
+    String lineColor,
+    String cancelButtonText,
+    bool isShowFlashIcon,
+    ScanMode scanMode,
+    int? delayMillis,
+    String cameraFace,
+    ScanFormat scanFormat,
+  ) async {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';
     }
@@ -44,7 +48,8 @@ class FlutterBarcodeScanner {
       'isContinuousScan': false,
       'scanMode': scanMode.index,
       'delayMillis': delayMillis ?? 0,
-      'cameraFacingText': cameraFace
+      'cameraFacingText': cameraFace,
+      'scanFormat': scanFormat.name,
     };
 
     /// Get barcode scan result
@@ -61,12 +66,14 @@ class FlutterBarcodeScanner {
   /// be customized with the [cancelButtonText] string. Returns a stream of
   /// detected barcode strings.
   static Stream? getBarcodeStreamReceiver(
-      String lineColor,
-      String cancelButtonText,
-      bool isShowFlashIcon,
-      ScanMode scanMode,
-      int? delayMillis,
-      String cameraFace) {
+    String lineColor,
+    String cancelButtonText,
+    bool isShowFlashIcon,
+    ScanMode scanMode,
+    int? delayMillis,
+    String cameraFace,
+    ScanFormat scanFormat,
+  ) {
     if (cancelButtonText.isEmpty) {
       cancelButtonText = 'Cancel';
     }
@@ -79,7 +86,8 @@ class FlutterBarcodeScanner {
       'isContinuousScan': true,
       'scanMode': scanMode.index,
       'delayMillis': delayMillis ?? 0,
-      'cameraFacingText': cameraFace
+      'cameraFacingText': cameraFace,
+      'scanFormat': scanFormat.name,
     };
 
     // Invoke method to open camera, and then create an event channel which will
