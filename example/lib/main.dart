@@ -50,8 +50,9 @@ class _HomePageState extends State<HomePage> {
                     backButtonIcon: Icon(Icons.arrow_back_ios),
                   ),
                   isShowFlashIcon: true,
-                  delayMillis: 2000,
-                  cameraFace: CameraFace.front,
+                  delayMillis: 500,
+                  cameraFace: CameraFace.back,
+                  scanFormat: ScanFormat.ALL_FORMATS,
                 );
                 setState(() {
                   result = res as String;

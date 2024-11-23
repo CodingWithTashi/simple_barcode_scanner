@@ -74,6 +74,27 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     // constants used to pass extra data in the intent
     public static final String BarcodeObject = "Barcode";
+    public static final int BARCODE_FORMATS =
+        Barcode.CODABAR
+                | Barcode.CODE_128
+                | Barcode.CODE_39
+                | Barcode.CODE_93
+                | Barcode.EAN_13
+                | Barcode.EAN_8
+                | Barcode.ISBN
+                | Barcode.ITF
+                | Barcode.PDF417
+                | Barcode.PRODUCT
+                | Barcode.UPC_A
+                | Barcode.UPC_E;
+
+    public static final int QR_CODE_FORMATS = Barcode.QR_CODE;
+    public static SCAN_FORMAT_ENUM SCAN_FORMAT = SCAN_FORMAT_ENUM.ALL_FORMATS;
+    public enum SCAN_FORMAT_ENUM {
+        ALL_FORMATS,
+        ONLY_QR_CODE,
+        ONLY_BARCODE
+    }
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -220,11 +241,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
         int delayMillis = (int) getIntent().getIntExtra("delayMillis", 0);
 
+        int barcodeFormats = getFormats();
+
         // A barcode detector is created to track barcodes.  An associated multi-processor instance
         // is set to receive the barcode detection results, track the barcodes, and maintain
         // graphics for each barcode on screen.  The factory is used by the multi-processor to
         // create a separate tracker instance for each barcode.
-        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).build();
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context)
+            .setBarcodeFormats(barcodeFormats)
+            .build();
         Log.d("BarcodeCaptureActivity", "Barcode detector set up:"+delayMillis);
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, this,delayMillis);
         barcodeDetector.setProcessor(
@@ -262,6 +287,17 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             mCameraSource.release();
         }
         mCameraSource = builder.build();
+    }
+
+    private static int getFormats() {
+        int barcodeFormats = Barcode.ALL_FORMATS;
+        if (SCAN_FORMAT == SCAN_FORMAT_ENUM.ONLY_QR_CODE){
+            barcodeFormats = QR_CODE_FORMATS;
+        }
+        if(SCAN_FORMAT == SCAN_FORMAT_ENUM.ONLY_BARCODE){
+            barcodeFormats = BARCODE_FORMATS;
+        }
+        return barcodeFormats;
     }
 
     /**

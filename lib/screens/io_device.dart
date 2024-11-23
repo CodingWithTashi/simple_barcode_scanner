@@ -25,20 +25,24 @@ class BarcodeScanner extends StatelessWidget {
   final BarcodeAppBar? barcodeAppBar;
   final int? delayMillis;
   final Function? onClose;
-  const BarcodeScanner(
-      {super.key,
-      required this.lineColor,
-      required this.cancelButtonText,
-      required this.isShowFlashIcon,
-      required this.scanType,
-      this.cameraFace = CameraFace.back,
-      required this.onScanned,
-      this.child,
-      this.appBarTitle,
-      this.centerTitle,
-      this.barcodeAppBar,
-      this.delayMillis,
-      this.onClose});
+  final ScanFormat scanFormat;
+
+  const BarcodeScanner({
+    super.key,
+    required this.lineColor,
+    required this.cancelButtonText,
+    required this.isShowFlashIcon,
+    required this.scanType,
+    this.cameraFace = CameraFace.back,
+    required this.onScanned,
+    this.child,
+    this.appBarTitle,
+    this.centerTitle,
+    this.barcodeAppBar,
+    this.delayMillis,
+    this.onClose,
+    this.scanFormat = ScanFormat.ALL_FORMATS,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +94,7 @@ class BarcodeScanner extends StatelessWidget {
       scanMode,
       delayMillis,
       cameraFace.name.toUpperCase(),
+      scanFormat,
     );
     onScanned(barcode);
   }
@@ -102,6 +107,7 @@ class BarcodeScanner extends StatelessWidget {
       scanMode,
       delayMillis,
       cameraFace.name.toUpperCase(),
+      scanFormat,
     )?.listen((barcode) {
       if (barcode != null) {
         barcode == kCancelValue ? onClose?.call() : onScanned(barcode);
@@ -127,6 +133,7 @@ class BarcodeScannerView extends StatelessWidget {
   final int? delayMillis;
   final Function? onClose;
   final bool continuous;
+  final ScanFormat scanFormat;
   const BarcodeScannerView(
       {super.key,
       this.scannerWidth,
@@ -138,6 +145,7 @@ class BarcodeScannerView extends StatelessWidget {
       this.child,
       this.delayMillis,
       this.onClose,
+      this.scanFormat = ScanFormat.ALL_FORMATS,
       required this.onBarcodeViewCreated});
 
   @override
@@ -154,6 +162,7 @@ class BarcodeScannerView extends StatelessWidget {
             'continuous': continuous,
             'scannerWidth': scannerWidth?.toInt(),
             'scannerHeight': scannerHeight?.toInt(),
+            'scanFormat': scanFormat.name,
           },
           creationParamsCodec: const StandardMessageCodec(),
         );
@@ -168,6 +177,7 @@ class BarcodeScannerView extends StatelessWidget {
             'continuous': continuous,
             'scannerWidth': scannerWidth?.toInt(),
             'scannerHeight': scannerHeight?.toInt(),
+            'scanFormat': scanFormat.name,
           },
           creationParamsCodec: const StandardMessageCodec(),
         );
