@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                   isShowFlashIcon: true,
                   delayMillis: 500,
                   cameraFace: CameraFace.back,
-                  scanFormat: ScanFormat.ALL_FORMATS,
+                  scanFormat: ScanFormat.ONLY_BARCODE,
                 );
                 setState(() {
                   result = res as String;

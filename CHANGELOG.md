@@ -1,3 +1,5 @@
+## 0.2.5
+* Special thanks to [Carlos](https://github.com/carlosfiori) for his contribution in [PR #94](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/94).
 ## 0.2.4
 * Downgraded SDK from 35 to 34 to support older flutter project
 ## 0.2.3
