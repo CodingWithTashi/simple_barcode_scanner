@@ -18,7 +18,7 @@ Window         |  Web
 <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/window_scanner.gif?raw=true" alt="drawing" width="600" height="550"/>  |  <img src="https://github.com/CodingWithTashi/simple_barcode_scanner/blob/main/example/demo/barcode_web.gif?raw=true" width="550" height="600" alt="drawing"/>
 
 ## Credit
-* This plugin is built upon the [flutter_barcode_scanner](https://github.com/amorenew/flutter_barcode_scanner) for Android and iOS. Since the original plugin is no longer actively maintained, I have forked the repository and implemented additional features on top of it. Special thanks to Amol Gangadhare for his work.
+* This plugin is built upon the [flutter_barcode_scanner](https://github.com/AmolGangadhare/flutter_barcode_scanner) for Android and iOS. Since the original plugin is no longer actively maintained, I have forked the repository and implemented additional features on top of it. Special thanks to Amol Gangadhare for his work.
 
 ## Features
 

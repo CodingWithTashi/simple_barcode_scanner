@@ -1,5 +1,8 @@
 ## 0.3.0
 * Removes references to Flutter v1 Android embedding classes
+## 0.2.6
+* Special thanks to [Kurczaak](https://github.com/Kurczaak) for his contribution in [PR #102](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/102).
+* Special thanks to [Natália](https://github.com/nataliafurtado) for her contribution in [PR #103](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/103)
 ## 0.2.5
 * Special thanks to [Carlos](https://github.com/carlosfiori) for his contribution in [PR #94](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/94).
 ## 0.2.4

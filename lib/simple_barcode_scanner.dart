@@ -98,7 +98,7 @@ class SimpleBarcodeScannerPage extends StatelessWidget {
       delayMillis: delayMillis,
       child: child,
       onScanned: (res) {
-        Navigator.pop(context, res);
+        if (context.mounted) Navigator.pop(context, res);
       },
     );
   }
