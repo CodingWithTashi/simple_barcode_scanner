@@ -33,7 +33,7 @@ Window         |  Web
 ## Getting started
 
 ```dart
-simple_barcode_scanner: ^0.2.0
+simple_barcode_scanner: ^0.3.0
 
 ```   
 Import the library:

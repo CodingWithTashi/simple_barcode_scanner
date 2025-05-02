@@ -1,3 +1,5 @@
+## 0.3.1
+* Improved Flutter 3.29 support
 ## 0.3.0
 * Removes references to Flutter v1 Android embedding classes
 ## 0.2.6
