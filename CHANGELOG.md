@@ -1,3 +1,5 @@
+## 0.3.1
+* Update `permission_handler` package
 ## 0.3.0
 * Removes references to Flutter v1 Android embedding classes
 ## 0.2.6
