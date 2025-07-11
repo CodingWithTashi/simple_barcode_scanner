@@ -57,6 +57,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -73,6 +74,27 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     // constants used to pass extra data in the intent
     public static final String BarcodeObject = "Barcode";
+    public static final int BARCODE_FORMATS =
+        Barcode.CODABAR
+                | Barcode.CODE_128
+                | Barcode.CODE_39
+                | Barcode.CODE_93
+                | Barcode.EAN_13
+                | Barcode.EAN_8
+                | Barcode.ISBN
+                | Barcode.ITF
+                | Barcode.PDF417
+                | Barcode.PRODUCT
+                | Barcode.UPC_A
+                | Barcode.UPC_E;
+
+    public static final int QR_CODE_FORMATS = Barcode.QR_CODE;
+    public static SCAN_FORMAT_ENUM SCAN_FORMAT = SCAN_FORMAT_ENUM.ALL_FORMATS;
+    public enum SCAN_FORMAT_ENUM {
+        ALL_FORMATS,
+        ONLY_QR_CODE,
+        ONLY_BARCODE
+    }
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -86,7 +108,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
     private ImageView imgViewSwitchCamera;
 
     public static int SCAN_MODE = SCAN_MODE_ENUM.QR.ordinal();
-
+    private int cameraFacing = CameraSource.CAMERA_FACING_BACK;
     public enum SCAN_MODE_ENUM {
         QR,
         BARCODE,
@@ -100,6 +122,17 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
     private int flashStatus = USE_FLASH.OFF.ordinal();
 
+
+    @Override
+    public void onBackPressed() {
+        Barcode barcode = new Barcode();
+        // -2 is the code for user cancelled the scan
+        barcode.rawValue = "-2";
+        barcode.displayValue = "-2";
+        FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
+        finish();
+    }
+
     /**
      * Initializes the UI and creates the detector pipeline.
      */
@@ -110,8 +143,10 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             setContentView(R.layout.barcode_capture);
 
             String buttonText = "";
+            String cameraFacingText = "";
             try {
                     buttonText = (String) getIntent().getStringExtra("cancelButtonText");
+                cameraFacingText = (String) getIntent().getStringExtra("cameraFacingText");
         } catch (Exception e) {
             buttonText = "Cancel";
             Log.e("BCActivity:onCreate()", "onCreate: " + e.getLocalizedMessage());
@@ -134,12 +169,13 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         // read parameters from the intent used to launch the activity.
         boolean autoFocus = true;
         boolean useFlash = false;
+        cameraFacing = Objects.equals(cameraFacingText, "FRONT") ?CameraSource.CAMERA_FACING_FRONT:CameraSource.CAMERA_FACING_BACK;
 
         // Check for the camera permission before accessing the camera.  If the
         // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
             if (rc == PackageManager.PERMISSION_GRANTED) {
-                createCameraSource(autoFocus, useFlash, CameraSource.CAMERA_FACING_BACK);
+                createCameraSource(autoFocus, useFlash, cameraFacing);
             } else {
                 requestCameraPermission();
             }
@@ -205,11 +241,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
 
         int delayMillis = (int) getIntent().getIntExtra("delayMillis", 0);
 
+        int barcodeFormats = getFormats();
+
         // A barcode detector is created to track barcodes.  An associated multi-processor instance
         // is set to receive the barcode detection results, track the barcodes, and maintain
         // graphics for each barcode on screen.  The factory is used by the multi-processor to
         // create a separate tracker instance for each barcode.
-        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context).build();
+        BarcodeDetector barcodeDetector = new BarcodeDetector.Builder(context)
+            .setBarcodeFormats(barcodeFormats)
+            .build();
         Log.d("BarcodeCaptureActivity", "Barcode detector set up:"+delayMillis);
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay, this,delayMillis);
         barcodeDetector.setProcessor(
@@ -247,6 +287,17 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             mCameraSource.release();
         }
         mCameraSource = builder.build();
+    }
+
+    private static int getFormats() {
+        int barcodeFormats = Barcode.ALL_FORMATS;
+        if (SCAN_FORMAT == SCAN_FORMAT_ENUM.ONLY_QR_CODE){
+            barcodeFormats = QR_CODE_FORMATS;
+        }
+        if(SCAN_FORMAT == SCAN_FORMAT_ENUM.ONLY_BARCODE){
+            barcodeFormats = BARCODE_FORMATS;
+        }
+        return barcodeFormats;
     }
 
     /**
@@ -310,7 +361,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
             // we have permission, so create the camerasource
             boolean autoFocus = true;
             boolean useFlash = false;
-            createCameraSource(autoFocus, useFlash, CameraSource.CAMERA_FACING_BACK);
+            createCameraSource(autoFocus, useFlash, cameraFacing);
             return;
         }
 
@@ -415,16 +466,13 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
                 Log.e("BarcodeCaptureActivity", "FlashOnFailure: " + e.getLocalizedMessage());
             }
         } else if (i == R.id.btnBarcodeCaptureCancel) {
-            Barcode barcode = new Barcode();
-            barcode.rawValue = "-1";
-            barcode.displayValue = "-1";
-            FlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode);
-            finish();
+            onBackPressed();
+
         } else if (i == R.id.imgViewSwitchCamera) {
-            int currentFacing = mCameraSource.getCameraFacing();
+            cameraFacing = mCameraSource.getCameraFacing();
             boolean autoFocus = mCameraSource.getFocusMode() != null;
             boolean useFlash = flashStatus == USE_FLASH.ON.ordinal();
-            createCameraSource(autoFocus, useFlash, getInverseCameraFacing(currentFacing));
+            createCameraSource(autoFocus, useFlash, getInverseCameraFacing(cameraFacing));
             startCameraSource();
         }
     }

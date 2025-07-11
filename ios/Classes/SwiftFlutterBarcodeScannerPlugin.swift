@@ -12,6 +12,40 @@ enum ScanMode:Int{
     }
 }
 
+enum ScanFormat {
+  case ALL_FORMATS
+  case ONLY_QR_CODE
+  case ONLY_BARCODE
+}
+
+let ALL_FORMATS =  [AVMetadataObject.ObjectType.upce,
+                    AVMetadataObject.ObjectType.code39,
+                    AVMetadataObject.ObjectType.code39Mod43,
+                    AVMetadataObject.ObjectType.code93,
+                    AVMetadataObject.ObjectType.code128,
+                    AVMetadataObject.ObjectType.ean8,
+                    AVMetadataObject.ObjectType.ean13,
+                    AVMetadataObject.ObjectType.aztec,
+                    AVMetadataObject.ObjectType.pdf417,
+                    AVMetadataObject.ObjectType.itf14,
+                    AVMetadataObject.ObjectType.dataMatrix,
+                    AVMetadataObject.ObjectType.interleaved2of5,
+                    AVMetadataObject.ObjectType.qr]
+
+let ONLY_QR_CODE = [AVMetadataObject.ObjectType.qr]
+
+let ONLY_BARCODE = [
+  AVMetadataObject.ObjectType.code128,
+  AVMetadataObject.ObjectType.code39,
+  AVMetadataObject.ObjectType.code39Mod43,
+  AVMetadataObject.ObjectType.code93,
+  AVMetadataObject.ObjectType.ean13,
+  AVMetadataObject.ObjectType.ean8,
+  AVMetadataObject.ObjectType.interleaved2of5,
+  AVMetadataObject.ObjectType.itf14,
+  AVMetadataObject.ObjectType.pdf417,
+  AVMetadataObject.ObjectType.upce];
+
 public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarcodeDelegate,FlutterStreamHandler {
     
     public static var viewController = UIViewController()
@@ -97,10 +131,25 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
         }else{
             SwiftFlutterBarcodeScannerPlugin.scanMode = ScanMode.QR.index
         }
+
+        let scanFormat: ScanFormat
+        if let scanFormatReceived = args["scanFormat"] as? String {
+            switch scanFormatReceived {
+                case "ONLY_BARCODE":
+                    scanFormat = .ONLY_BARCODE
+                case "ONLY_QR_CODE":
+                    scanFormat = .ONLY_QR_CODE
+                default:
+                    scanFormat = .ALL_FORMATS
+            }
+        } else {
+            scanFormat = .ALL_FORMATS
+        }
         
         pendingResult=result
         let controller = BarcodeScannerViewController()
         controller.delegate = self
+        controller.setScanFormat(format: scanFormat)
         
         if #available(iOS 13.0, *) {
             controller.modalPresentationStyle = .fullScreen
@@ -156,19 +205,8 @@ protocol ScanBarcodeDelegate {
 }
 
 class BarcodeScannerViewController: UIViewController {
-    private let supportedCodeTypes = [AVMetadataObject.ObjectType.upce,
-                                      AVMetadataObject.ObjectType.code39,
-                                      AVMetadataObject.ObjectType.code39Mod43,
-                                      AVMetadataObject.ObjectType.code93,
-                                      AVMetadataObject.ObjectType.code128,
-                                      AVMetadataObject.ObjectType.ean8,
-                                      AVMetadataObject.ObjectType.ean13,
-                                      AVMetadataObject.ObjectType.aztec,
-                                      AVMetadataObject.ObjectType.pdf417,
-                                      AVMetadataObject.ObjectType.itf14,
-                                      AVMetadataObject.ObjectType.dataMatrix,
-                                      AVMetadataObject.ObjectType.interleaved2of5,
-                                      AVMetadataObject.ObjectType.qr]
+    private var supportedCodeTypes = ALL_FORMATS
+  
     public var delegate: ScanBarcodeDelegate? = nil
     private var captureSession = AVCaptureSession()
     private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
@@ -182,7 +220,7 @@ class BarcodeScannerViewController: UIViewController {
     private var isOrientationPortrait = true
     var screenHeight:CGFloat = 0
     let captureMetadataOutput = AVCaptureMetadataOutput()
-    
+      
     private lazy var xCor: CGFloat! = {
         return self.isOrientationPortrait ? (screenSize.width - (screenSize.width*0.8))/2 :
             (screenSize.width - (screenSize.width*0.6))/2
@@ -469,7 +507,7 @@ class BarcodeScannerViewController: UIViewController {
     @IBAction private func cancelButtonClicked() {
         if SwiftFlutterBarcodeScannerPlugin.isContinuousScan{
             self.dismiss(animated: true, completion: {
-                SwiftFlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode: "-1")
+                SwiftFlutterBarcodeScannerPlugin.onBarcodeScanReceiver(barcode: "-2")
             })
         }else{
             if self.delegate != nil {
@@ -579,6 +617,20 @@ class BarcodeScannerViewController: UIViewController {
             })
         }
     }
+  
+  
+    public func setScanFormat(format: ScanFormat){
+      var supportedFormats = ALL_FORMATS
+      switch format {
+        case ScanFormat.ONLY_BARCODE:
+          supportedFormats = ONLY_BARCODE
+        case ScanFormat.ONLY_QR_CODE:
+          supportedFormats = ONLY_QR_CODE
+        default:
+          supportedFormats = ALL_FORMATS
+      }
+      supportedCodeTypes = supportedFormats
+  }
 }
 
 /// Extension for view controller

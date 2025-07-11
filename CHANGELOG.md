@@ -1,3 +1,33 @@
+## 0.3.0
+* Removes references to Flutter v1 Android embedding classes
+## 0.2.6
+* Special thanks to [Kurczaak](https://github.com/Kurczaak) for his contribution in [PR #102](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/102).
+* Special thanks to [Natália](https://github.com/nataliafurtado) for her contribution in [PR #103](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/103)
+## 0.2.5
+* Special thanks to [Carlos](https://github.com/carlosfiori) for his contribution in [PR #94](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/94).
+## 0.2.4
+* Downgraded SDK from 35 to 34 to support older flutter project
+## 0.2.3
+* Fixed web build issue
+## 0.2.2
+* Fixed web https://github.com/CodingWithTashi/simple_barcode_scanner/issues/85
+## 0.2.1
+* Added `SimpleBarcodeScanner` widget to scan barcode
+* Looking for feedback to improve the use case
+
+## 0.2.0
+* `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
+* Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method
+* Stream barcode with `SimpleBarcodeScanner` `streamBarcode` method
+* Added `cameraFace` to switch between front and back camera,works only on android 
+* Updated example page
+
+## 0.1.9
+* `SimpleBarcodeScannerPage` is now depreciated, use `SimpleBarcodeScanner` instead
+* Scan barcode with `SimpleBarcodeScanner` `scanBarcode` method
+* Stream barcode with `SimpleBarcodeScanner` `streamBarcode` method
+* Updated example page
+
 ## 0.1.8
 * IOS build issue fixed
 * Delay feature added for android and ios
