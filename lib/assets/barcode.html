@@ -51,7 +51,7 @@
                 height: 250,
             },
             videoConstraints: {
-                facingMode: "environment",
+                facingMode: { exact: "environment"},
                 focusMode: { exact: "continuous" },
                 width: { ideal: 1920 },
                 height: { ideal: 1080 }
@@ -59,7 +59,7 @@
         };
 
         html5QrCode.start({
-            facingMode: "environment"
+            facingMode: {exact: "environment"}
         }, config, qrCodeSuccessCallback);
 
         //Window event listener
