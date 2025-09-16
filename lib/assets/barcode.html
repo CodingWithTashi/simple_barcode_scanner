@@ -28,7 +28,16 @@
     <div id="reader"></div>
     <script>
         //refer doc here https://github.com/mebjas/html5-qrcode
-        const html5QrCode = new Html5Qrcode("reader");
+        const formatsToSupport = [
+            Html5QrcodeSupportedFormats.QR_CODE,
+            Html5QrcodeSupportedFormats.UPC_A,
+            Html5QrcodeSupportedFormats.UPC_E,
+            Html5QrcodeSupportedFormats.UPC_EAN_EXTENSION,
+            Html5QrcodeSupportedFormats.CODE_128,
+            Html5QrcodeSupportedFormats.EAN_8,
+            Html5QrcodeSupportedFormats.EAN_13,
+        ];
+        const html5QrCode = new Html5Qrcode("reader", { formatsToSupport });
         console.log("Starting SCANNING CODE");
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             /* handle success for web */
