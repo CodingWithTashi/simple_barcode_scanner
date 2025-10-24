@@ -1,4 +1,4 @@
-## 0.3.2
+## 0.4.0
 * Fixed MissingPluginException [PR #116](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/116)
 
 ## 0.3.1
