@@ -1,6 +1,9 @@
 ## 0.3.1
 * Fixed MissingPluginException [PR #116](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/116)
 
+## 0.3.1
+* Removes FlutterActivity reference
+* Migrates to applying Gradle plugins (https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply)
 ## 0.3.0
 * Removes references to Flutter v1 Android embedding classes
 ## 0.2.6

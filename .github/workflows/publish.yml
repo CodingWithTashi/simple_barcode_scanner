@@ -1,18 +1,68 @@
+name: Flutter Package Release
+
 on:
+  # Manual trigger with version input
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version (e.g., v1.0.0)'
+        required: true
+      release_note:
+        description: 'Release notes'
+        required: true
+  # Automated trigger on main branch
   release:
     branches:
       - main
+
 jobs:
-  build:
+  # Job to update changelog and create release
+  prepare-release:
     runs-on: ubuntu-latest
+    # Only run this job if triggered manually
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Update CHANGELOG.md
+        run: |
+          echo "## ${{ github.event.inputs.version }} - $(date +'%Y-%m-%d')" >> temp_changelog.md
+          echo "${{ github.event.inputs.release_note }}" >> temp_changelog.md
+          echo "" >> temp_changelog.md
+          cat CHANGELOG.md >> temp_changelog.md
+          mv temp_changelog.md CHANGELOG.md
+      
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md
+          git commit -m "Update changelog for ${{ github.event.inputs.version }}"
+          git tag ${{ github.event.inputs.version }}
+          git push
+          git push --tags
+
+  # Job to build and publish package
+  build:
+    runs-on: ubuntu-latest
+    needs: [prepare-release]
+    if: always() && (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.sha || github.event.release.tag_name }}
+      
       - name: Install Flutter
         uses: subosito/flutter-action@v2
+      
       - name: Install dependencies
         run: flutter pub get
+      
       - name: Format code
         run: dart format --fix .
+      
       - name: Publish
         uses: k-paxian/dart-package-publisher@v1.5.1
         with:
