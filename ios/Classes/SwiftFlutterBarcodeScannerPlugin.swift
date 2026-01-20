@@ -60,11 +60,24 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
 
     /// Get the root view controller safely
     public static var viewController: UIViewController? {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootVC = windowScene.windows.first?.rootViewController {
-            return rootVC
+        if #available(iOS 13.0, *) {
+            // Prefer the foreground active window scene
+            let windowScene = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first(where: { $0.activationState == .foregroundActive })
+                ?? UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .first
+
+            if let scene = windowScene {
+                // Prefer the key window, fall back to the first window
+                let window = scene.windows.first(where: { $0.isKeyWindow }) ?? scene.windows.first
+                if let rootVC = window?.rootViewController {
+                    return rootVC
+                }
+            }
         }
-        // Fallback for older iOS versions
+        // Fallback for older iOS versions or if no suitable scene/window was found
         return UIApplication.shared.delegate?.window??.rootViewController
     }
 
@@ -200,7 +213,10 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
     
     /// Show common alert dialog
     func showAlertDialog(title:String,message:String){
-        guard let viewController = SwiftFlutterBarcodeScannerPlugin.viewController else { return }
+        guard let viewController = SwiftFlutterBarcodeScannerPlugin.viewController else {
+            NSLog("SwiftFlutterBarcodeScannerPlugin: Unable to show alert '\(title)': root view controller is nil.")
+            return
+        }
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(alertAction)
