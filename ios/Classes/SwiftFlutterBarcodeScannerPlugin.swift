@@ -177,7 +177,7 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
         }
         
         guard let viewController = SwiftFlutterBarcodeScannerPlugin.viewController else {
-            result("-1")
+            result("-3")
             return
         }
 
@@ -187,8 +187,12 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
             }else {
                 AVCaptureDevice.requestAccess(for: .video) { success in
                     DispatchQueue.main.async {
+                        guard let currentViewController = SwiftFlutterBarcodeScannerPlugin.viewController else {
+                            return
+                        }
+                        
                         if success {
-                            viewController.present(controller, animated: true)
+                            currentViewController.present(controller, animated: true)
                         } else {
                             let alert = UIAlertController(title: "Action needed", message: "Please grant camera permission to use barcode scanner", preferredStyle: .alert)
 
@@ -198,7 +202,7 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
 
                             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
 
-                            viewController.present(alert, animated: true)
+                            currentViewController.present(alert, animated: true)
                         }
                     }
                 }}
