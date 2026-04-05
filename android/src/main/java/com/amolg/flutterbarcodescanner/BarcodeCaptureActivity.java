@@ -41,6 +41,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -141,6 +143,27 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         super.onCreate(icicle);
         try {
             setContentView(R.layout.barcode_capture);
+
+            // Handle system window insets to prevent navigation bar overlap
+            View rootView = findViewById(R.id.topLayout);
+            if (rootView != null) {
+                rootView.setFitsSystemWindows(true);
+
+                // Set OnApplyWindowInsetsListener for proper insets handling
+                rootView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
+                        // Consume the insets and prevent them from being passed down
+                        v.setPadding(
+                            v.getPaddingLeft(),
+                            v.getPaddingTop(),
+                            v.getPaddingRight(),
+                            insets.getSystemWindowInsetBottom()
+                        );
+                        return insets.consumeSystemWindowInsets();
+                    }
+                });
+            }
 
             String buttonText = "";
             String cameraFacingText = "";

@@ -1,3 +1,8 @@
+## 0.6.0
+* Fixed [Issue #108](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/108) - Integer/Long ClassCastException on Android
+* Fixed [Issue #105](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/105) - iOS buttons overlapped by system UI (safe area support)
+* Fixed [Issue #118](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/118) - Android navigation bar overlap
+
 ## 0.5.0
 * Fixed iOS crash when rootViewController is nil during plugin registration [PR #127](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/127)
   * Fixes [Issue #130](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/130) - iOS Simulator crash during plugin registration

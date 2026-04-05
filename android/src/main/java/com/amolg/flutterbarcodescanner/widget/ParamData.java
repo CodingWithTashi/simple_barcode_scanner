@@ -52,12 +52,29 @@ public class ParamData {
         return scannerHeight;
     }
 
+    // Helper method to safely convert Number to Long
+    private static Long getLongFromObject(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        if (obj instanceof Long) {
+            return (Long) obj;
+        }
+        if (obj instanceof Integer) {
+            return ((Integer) obj).longValue();
+        }
+        if (obj instanceof Number) {
+            return ((Number) obj).longValue();
+        }
+        return null;
+    }
+
     // Method to create an instance from a Map
     public static ParamData fromMap(Map<String, Object> map) {
         String key = (String) map.get("key");
         Integer scanType = (Integer) map.get("scanType");
         Integer cameraFace = (Integer) map.get("cameraFace");
-        Long delayMillis = (Long) map.get("delayMillis");
+        Long delayMillis = getLongFromObject(map.get("delayMillis"));
         Boolean continuous = (Boolean) map.get("continuous");
         Integer scannerWidth = (Integer) map.get("scannerWidth");
         Integer scannerHeight = (Integer) map.get("scannerHeight");
