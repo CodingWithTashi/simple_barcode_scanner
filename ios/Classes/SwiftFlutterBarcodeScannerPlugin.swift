@@ -47,8 +47,7 @@ let ONLY_BARCODE = [
   AVMetadataObject.ObjectType.upce];
 
 public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarcodeDelegate,FlutterStreamHandler {
-    
-    public static var viewController = UIViewController()
+
     public static var lineColor:String=""
     public static var cancelButtonText:String=""
     public static var isShowFlashIcon:Bool=false
@@ -59,9 +58,31 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
     public static var delayMillis:Int=0
     public static var delayTimer: Timer?
 
+    /// Get the root view controller safely
+    public static var viewController: UIViewController? {
+        if #available(iOS 13.0, *) {
+            // Prefer the foreground active window scene
+            let windowScene = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first(where: { $0.activationState == .foregroundActive })
+                ?? UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .first
+
+            if let scene = windowScene {
+                // Prefer the key window, fall back to the first window
+                let window = scene.windows.first(where: { $0.isKeyWindow }) ?? scene.windows.first
+                if let rootVC = window?.rootViewController {
+                    return rootVC
+                }
+            }
+        }
+        // Fallback for older iOS versions or if no suitable scene/window was found
+        return UIApplication.shared.delegate?.window??.rootViewController
+    }
+
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        viewController = (UIApplication.shared.delegate?.window??.rootViewController)!
         let channel = FlutterMethodChannel(name: "flutter_barcode_scanner", binaryMessenger: registrar.messenger())
         let instance = SwiftFlutterBarcodeScannerPlugin()
         registrar.addMethodCallDelegate(instance, channel: channel)
@@ -155,30 +176,33 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
             controller.modalPresentationStyle = .fullScreen
         }
         
+        guard let viewController = SwiftFlutterBarcodeScannerPlugin.viewController else {
+            result("-3")
+            return
+        }
+
         if checkCameraAvailability(){
             if checkForCameraPermission() {
-                SwiftFlutterBarcodeScannerPlugin.viewController.present(controller
-                                                                        , animated: true) {
-                    
-                }
+                viewController.present(controller, animated: true)
             }else {
                 AVCaptureDevice.requestAccess(for: .video) { success in
                     DispatchQueue.main.async {
+                        guard let currentViewController = SwiftFlutterBarcodeScannerPlugin.viewController else {
+                            return
+                        }
+                        
                         if success {
-                            SwiftFlutterBarcodeScannerPlugin.viewController.present(controller
-                                                                                    , animated: true) {
-                                
-                            }
+                            currentViewController.present(controller, animated: true)
                         } else {
                             let alert = UIAlertController(title: "Action needed", message: "Please grant camera permission to use barcode scanner", preferredStyle: .alert)
-                            
+
                             alert.addAction(UIAlertAction(title: "Grant", style: .default, handler: { action in
                                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                             }))
-                            
+
                             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-                            
-                            SwiftFlutterBarcodeScannerPlugin.viewController.present(alert, animated: true)
+
+                            currentViewController.present(alert, animated: true)
                         }
                     }
                 }}
@@ -193,10 +217,14 @@ public class SwiftFlutterBarcodeScannerPlugin: NSObject, FlutterPlugin, ScanBarc
     
     /// Show common alert dialog
     func showAlertDialog(title:String,message:String){
+        guard let viewController = SwiftFlutterBarcodeScannerPlugin.viewController else {
+            NSLog("SwiftFlutterBarcodeScannerPlugin: Unable to show alert '\(title)': root view controller is nil.")
+            return
+        }
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
         alertController.addAction(alertAction)
-        SwiftFlutterBarcodeScannerPlugin.viewController.present(alertController, animated: true, completion: nil)
+        viewController.present(alertController, animated: true, completion: nil)
     }
 }
 
