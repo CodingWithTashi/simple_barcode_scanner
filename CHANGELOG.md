@@ -1,5 +1,7 @@
 ## 0.5.0
 * Fixed iOS crash when rootViewController is nil during plugin registration [PR #127](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/127)
+  * Fixes [Issue #130](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/130) - iOS Simulator crash during plugin registration
+  * Fixes [Issue #131](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/131) - Android onActivityResult crash
   * Special thanks to [Barba2k2](https://github.com/Barba2k2) for his contribution
 * Removed jcenter references [PR #126](https://github.com/CodingWithTashi/simple_barcode_scanner/pull/126)
 * Improved viewController retrieval and added error handling
