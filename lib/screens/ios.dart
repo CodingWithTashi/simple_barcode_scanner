@@ -111,7 +111,7 @@ class _IosBarcodeScannerState extends State<IosBarcodeScanner>
               child: MobileScanner(
                 scanWindow: Rect.fromPoints(coordA, coordB),
                 controller: controller,
-                errorBuilder: (context, error, child) {
+                errorBuilder: (context, error) {
                   return Text(
                     error.toString(),
                     style: const TextStyle(color: Colors.brown),
@@ -185,7 +185,7 @@ class ScannerOverlay extends CustomPainter {
     final cutoutPath = Path()..addRect(scanWindow);
 
     final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
+      ..color = Colors.black.withAlpha(128)
       ..style = PaintingStyle.fill
       ..blendMode = BlendMode.dstOut;
 
