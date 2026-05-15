@@ -47,7 +47,7 @@
  };
  supportedFormats.default = supportedFormats.qr.concat(supportedFormats.barcode);
 
- const params = new URLSearchParams(window.location.search);
+ const params = new URLSearchParams(globalThis.location.search);
  const requestedScanType = params.get("scanType") || "default";
  const requestedCameraFace = params.get("cameraFace") || "back";
  const formatsToSupport =
@@ -62,15 +62,15 @@
  const qrCodeSuccessCallback = (decodedText, decodedResult) => {
      html5QrCode.stop();
      /* handle success for web */
-     window.parent.postMessage(decodedText, "*");
+     globalThis.parent.postMessage(decodedText, "*");
 
      /* handle success for window */
-     if (window.chrome && window.chrome.webview) {
+     if (globalThis.chrome && globalThis.chrome.webview) {
          var param = {
              "methodName": "successCallback",
              "data": decodedText
          }
-         window.chrome.webview.postMessage(param);
+         globalThis.chrome.webview.postMessage(param);
      }
 
  };
@@ -84,17 +84,23 @@
  };
 
  // If you want to prefer back camera
- html5QrCode.start({
-     facingMode: cameraFacingMode
- }, config, qrCodeSuccessCallback, function(errorMessage) {
-     console.debug("Barcode scan frame did not decode", errorMessage);
- }).catch(function(error) {
-     console.error("Unable to start barcode scanner", error);
- });
+ async function startScanner() {
+     try {
+         await html5QrCode.start({
+             facingMode: cameraFacingMode
+         }, config, qrCodeSuccessCallback, function(errorMessage) {
+             console.debug("Barcode scan frame did not decode", errorMessage);
+         });
+     } catch (error) {
+         console.error("Unable to start barcode scanner", error);
+     }
+ }
+
+ startScanner();
 
 //Window event listener
- if (window.chrome && window.chrome.webview) {
-     window.chrome.webview.addEventListener('message', function(e) {
+ if (globalThis.chrome && globalThis.chrome.webview) {
+     globalThis.chrome.webview.addEventListener('message', function(e) {
          let data = JSON.parse(JSON.stringify(e.data));
          if (data.event === "close") {
              html5QrCode.stop();
