@@ -126,7 +126,12 @@ class WindowBarcodeScanner extends StatelessWidget {
   String getAssetFileUrl({required String asset}) {
     final assetsDirectory = p.join(p.dirname(Platform.resolvedExecutable),
         'data', 'flutter_assets', asset);
-    return Uri.file(assetsDirectory).toString();
+    return Uri.file(assetsDirectory).replace(
+      queryParameters: {
+        'scanType': scanType.name,
+        'cameraFace': cameraFace.name,
+      },
+    ).toString();
   }
 
   Future<bool> initPlatformState(
@@ -155,7 +160,10 @@ class WindowBarcodeScanner extends StatelessWidget {
     return true;
   }
 
-  _buildAppBar(WebviewController controller, BuildContext context) {
+  PreferredSizeWidget? _buildAppBar(
+    WebviewController controller,
+    BuildContext context,
+  ) {
     if (appBarTitle == null && barcodeAppBar == null) {
       return null;
     }

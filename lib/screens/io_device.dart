@@ -53,10 +53,13 @@ class BarcodeScanner extends StatelessWidget {
         cancelButtonText: cancelButtonText,
         isShowFlashIcon: isShowFlashIcon,
         scanType: scanType,
+        cameraFace: cameraFace,
         onScanned: onScanned,
         appBarTitle: appBarTitle,
         centerTitle: centerTitle,
+        barcodeAppBar: barcodeAppBar,
         delayMillis: delayMillis,
+        onClose: onClose,
       );
     } else {
       /// Scan Android and ios barcode scanner with flutter_barcode_scanner
@@ -86,7 +89,7 @@ class BarcodeScanner extends StatelessWidget {
     }
   }
 
-  _scanBarcodeForMobileAndTabDevices(ScanMode scanMode) async {
+  Future<void> _scanBarcodeForMobileAndTabDevices(ScanMode scanMode) async {
     String barcode = await FlutterBarcodeScanner.scanBarcode(
       lineColor,
       cancelButtonText,
