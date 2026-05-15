@@ -20,8 +20,9 @@
 <body>
 <!-- Div to show the scanner -->
 <div id="reader" ></div>
-<script>
+<script type="module">
   //refer doc here https://github.com/mebjas/html5-qrcode
+ const { Html5Qrcode, Html5QrcodeSupportedFormats } = globalThis;
  const supportedFormats = {
      qr: [
          Html5QrcodeSupportedFormats.QR_CODE,
@@ -84,19 +85,15 @@
  };
 
  // If you want to prefer back camera
- async function startScanner() {
-     try {
-         await html5QrCode.start({
-             facingMode: cameraFacingMode
-         }, config, qrCodeSuccessCallback, function(errorMessage) {
-             console.debug("Barcode scan frame did not decode", errorMessage);
-         });
-     } catch (error) {
-         console.error("Unable to start barcode scanner", error);
-     }
+ try {
+     await html5QrCode.start({
+         facingMode: cameraFacingMode
+     }, config, qrCodeSuccessCallback, function(errorMessage) {
+         console.debug("Barcode scan frame did not decode", errorMessage);
+     });
+ } catch (error) {
+     console.error("Unable to start barcode scanner", error);
  }
-
- startScanner();
 
 //Window event listener
  if (globalThis.chrome && globalThis.chrome.webview) {
