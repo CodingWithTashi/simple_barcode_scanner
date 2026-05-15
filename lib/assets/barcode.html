@@ -22,7 +22,42 @@
 <div id="reader" ></div>
 <script>
   //refer doc here https://github.com/mebjas/html5-qrcode
- const html5QrCode = new Html5Qrcode("reader");
+ const supportedFormats = {
+     qr: [
+         Html5QrcodeSupportedFormats.QR_CODE,
+     ],
+     barcode: [
+         Html5QrcodeSupportedFormats.AZTEC,
+         Html5QrcodeSupportedFormats.CODABAR,
+         Html5QrcodeSupportedFormats.CODE_39,
+         Html5QrcodeSupportedFormats.CODE_93,
+         Html5QrcodeSupportedFormats.CODE_128,
+         Html5QrcodeSupportedFormats.DATA_MATRIX,
+         Html5QrcodeSupportedFormats.EAN_8,
+         Html5QrcodeSupportedFormats.EAN_13,
+         Html5QrcodeSupportedFormats.ITF,
+         Html5QrcodeSupportedFormats.MAXICODE,
+         Html5QrcodeSupportedFormats.PDF_417,
+         Html5QrcodeSupportedFormats.RSS_14,
+         Html5QrcodeSupportedFormats.RSS_EXPANDED,
+         Html5QrcodeSupportedFormats.UPC_A,
+         Html5QrcodeSupportedFormats.UPC_E,
+         Html5QrcodeSupportedFormats.UPC_EAN_EXTENSION,
+     ],
+ };
+ supportedFormats.default = supportedFormats.qr.concat(supportedFormats.barcode);
+
+ const params = new URLSearchParams(window.location.search);
+ const requestedScanType = params.get("scanType") || "default";
+ const requestedCameraFace = params.get("cameraFace") || "back";
+ const formatsToSupport =
+     supportedFormats[requestedScanType] || supportedFormats.default;
+ const cameraFacingMode = requestedCameraFace === "front" ? "user" : "environment";
+
+ const html5QrCode = new Html5Qrcode("reader", {
+     formatsToSupport,
+     useBarCodeDetectorIfSupported: true,
+ });
  console.log("Starting SCANNING CODE");
  const qrCodeSuccessCallback = (decodedText, decodedResult) => {
      html5QrCode.stop();
@@ -30,7 +65,7 @@
      window.parent.postMessage(decodedText, "*");
 
      /* handle success for window */
-     if (window.chrome.webview != "undefined") {
+     if (window.chrome && window.chrome.webview) {
          var param = {
              "methodName": "successCallback",
              "data": decodedText
@@ -50,12 +85,15 @@
 
  // If you want to prefer back camera
  html5QrCode.start({
-     facingMode: "environment"
- }, config, qrCodeSuccessCallback);
- //html5QrCode.start({ facingMode: "user" }, config, qrCodeSuccessCallback);
+     facingMode: cameraFacingMode
+ }, config, qrCodeSuccessCallback, function(errorMessage) {
+     console.debug("Barcode scan frame did not decode", errorMessage);
+ }).catch(function(error) {
+     console.error("Unable to start barcode scanner", error);
+ });
 
- //Window event listener
- if (window.chrome.webview != undefined) {
+//Window event listener
+ if (window.chrome && window.chrome.webview) {
      window.chrome.webview.addEventListener('message', function(e) {
          let data = JSON.parse(JSON.stringify(e.data));
          if (data.event === "close") {
