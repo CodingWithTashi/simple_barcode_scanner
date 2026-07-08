@@ -328,12 +328,53 @@ class BarcodeScannerViewController: UIViewController {
     }
     
     
+    /// Pick the best back-facing camera for close-range barcode scanning.
+    /// Prefers a virtual multi-camera device (triple / dual-wide) so the system can
+    /// automatically switch to the ultra-wide lens for macro focus on iPhone Pro models,
+    /// whose wide lens cannot focus at short scanning distances. Falls back to the plain
+    /// wide-angle camera, so single-lens devices behave exactly as before.
+    private func preferredBackCamera() -> AVCaptureDevice? {
+        if #available(iOS 13.0, *) {
+            if let device = AVCaptureDevice.default(.builtInTripleCamera, for: .video, position: .back) {
+                return device
+            }
+            if let device = AVCaptureDevice.default(.builtInDualWideCamera, for: .video, position: .back) {
+                return device
+            }
+        }
+        return AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back)
+    }
+
+    /// Configure the device for reliable close-range barcode focus.
+    /// Every setting is capability-gated, so unsupported (e.g. single-lens) devices are unchanged.
+    private func enableCloseFocus(on device: AVCaptureDevice) {
+        do {
+            try device.lockForConfiguration()
+            if #available(iOS 13.0, *) {
+                // On a virtual multi-camera device, frame like the standard wide lens (~1x)
+                // rather than the 0.5x ultra-wide, while still allowing the automatic switch
+                // to the ultra-wide for close (macro) focus.
+                if let switchOverZoom = device.virtualDeviceSwitchOverVideoZoomFactors.first {
+                    device.videoZoomFactor = CGFloat(truncating: switchOverZoom)
+                }
+            }
+            if device.isAutoFocusRangeRestrictionSupported {
+                device.autoFocusRangeRestriction = .near
+            }
+            if device.isFocusModeSupported(.continuousAutoFocus) {
+                device.focusMode = .continuousAutoFocus
+            }
+            device.unlockForConfiguration()
+        } catch {
+            print(error)
+        }
+    }
+
     // Inititlize components
     func initBarcodeComponents(){
         
-        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back)
         // Get the back-facing camera for capturing videos
-        guard let captureDevice = deviceDiscoverySession.devices.first else {
+        guard let captureDevice = preferredBackCamera() else {
             print("Failed to get the camera device")
             return
         }
@@ -399,6 +440,13 @@ class BarcodeScannerViewController: UIViewController {
         
         // Start video capture.
         captureSession.startRunning()
+
+        // Configure focus after the session is running: starting a session can change
+        // the device's active format, which resets videoZoomFactor. Re-runs on rotation,
+        // which is harmless (idempotent).
+        if let device = getCaptureDeviceFromCurrentSession(session: captureSession), device.position == .back {
+            enableCloseFocus(on: device)
+        }
         
         let scanRect = CGRect(x: xCor, y: yCor, width: self.isOrientationPortrait ? (screenSize.width*0.8) : (screenSize.height*0.8), height: screenHeight)
         
@@ -562,6 +610,10 @@ class BarcodeScannerViewController: UIViewController {
             captureSession.addInput(newInput)
             // Disable flash by default
             setFlashStatus(device: device, mode: .off)
+            // Keep close-range focus when switching back to the rear camera.
+            if device.position == .back {
+                enableCloseFocus(on: device)
+            }
         } catch let error {
             print(error)
             return
@@ -575,6 +627,11 @@ class BarcodeScannerViewController: UIViewController {
     }
     
     private func getCaptureDeviceByPosition(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
+        // Use the multi-camera preference for the rear position so close-range focus
+        // keeps working after switching cameras.
+        if position == .back {
+            return preferredBackCamera()
+        }
         // List all capture devices
         let devices = AVCaptureDevice.DiscoverySession(deviceTypes: [ .builtInWideAngleCamera ], mediaType: AVMediaType.video, position: .unspecified).devices
         for device in devices {
