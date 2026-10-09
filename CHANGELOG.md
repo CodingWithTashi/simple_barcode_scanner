@@ -1,4 +1,6 @@
-## 0.6.0
+## 0.6.1
+* Fixed [Issue #132](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/132) Special thanks to [Marta](https://github.com/MDias04) for her contribution
+## 0.6.01
 * Fixed [Issue #108](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/108) - Integer/Long ClassCastException on Android
 * Fixed [Issue #105](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/105) - iOS buttons overlapped by system UI (safe area support)
 * Fixed [Issue #118](https://github.com/CodingWithTashi/simple_barcode_scanner/issues/118) - Android navigation bar overlap
